@@ -1566,4 +1566,29 @@ textarea {
     }
 
 }
- 
+ /* Célzott pontátlag — sötét beviteli mező */
+#pointsGoal {
+   background: rgba(15, 25, 43, 0.95) !important;
+   color: #f3f6ff !important;
+   border: 1px solid rgba(145, 180, 255, 0.25) !important;
+   border-radius: 14px !important;
+   color-scheme: dark;
+}
+#pointsGoal::placeholder {
+   color: #8795ad;
+}
+#pointsGoal:focus {
+   outline: none;
+   border-color: rgba(100, 160, 255, 0.8) !important;
+   box-shadow: 0 0 0 3px rgba(75, 130, 255, 0.15);
+}
+/* Kényelmes felső tér iPhone-on */
+@media (max-width: 700px) {
+   body {
+       padding-top: max(16px, env(safe-area-inset-top));
+   }
+   .app-header {
+       margin-top: 6px;
+       border-radius: 24px;
+   }
+}
