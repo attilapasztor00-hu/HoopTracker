@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d18">
+<title>HoopTracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="app-header">
+<div>
+<h1>HoopTracker<span>.</span></h1>
+<p>A saját fejlődésed. Minden adat számít.</p>
+</div>
+<div class="header-status">
+<span class="status-dot"></span>
+           PLAYER DEVELOPMENT
+</div>
+</header>
+<nav class="main-nav" aria-label="Fő navigáció">
+<a class="nav-link active" href="#dashboard">Dashboard</a>
+<a class="nav-link" href="#myPlayer">My Player</a>
+<a class="nav-link" href="#challenges">Challenges</a>
+<a class="nav-link" href="#records">Records</a>
+<a class="nav-link" href="#gameSection">Meccsek</a>
+<a class="nav-link" href="#workoutSection">Edzésnapló</a>
+</nav>
+<main>
+<section id="dashboard" class="page-section">
+<div class="section-heading">
+<div>
+<p class="eyebrow">OVERVIEW</p>
+<h2>Dashboard</h2>
+<p class="section-description">A teljesítményed egy helyen.</p>
+</div>
+</div>
+<section class="stats">
+<div class="card">
+<p>Pontátlag</p>
+<h2 id="pointsAverage">0.0</h2>
+<span>Pont / meccs</span>
+</div>
+<div class="card">
+<p>Tripla</p>
+<h2 id="threePointPercentage">0%</h2>
+<span>Bedobott / kísérlet</span>
+</div>
+<div class="card">
+<p>Lepattanóátlag</p>
+<h2 id="reboundsAverage">0.0</h2>
+<span>Lepattanó / meccs</span>
+</div>
+<div class="card">
+<p>Gólpasszátlag</p>
+<h2 id="assistsAverage">0.0</h2>
+<span>Gólpassz / meccs</span>
+</div>
+</section>
+<section class="panel">
+<p class="eyebrow">SEASON TARGET</p>
+<h2>Szezoncélok</h2>
+<label for="pointsGoal">Célzott pontátlag</label>
+<input id="pointsGoal" type="number" min="1" value="30">
+<p id="goalProgress">Pontátlagcél: 0.0 / 30 pont</p>
+<div class="progress-bar">
+<div id="goalBar" class="progress-fill"></div>
+</div>
+<p id="goalPercentage">0% a célból</p>
+</section>
+<section class="panel">
+<p class="eyebrow">THIS WEEK</p>
+<h2>Heti statisztikák</h2>
+<p id="weeklyGames">Meccsek ezen a héten: 0</p>
+<p id="weeklyPoints">Dobott pontok ezen a héten: 0</p>
+<p id="weeklyAverage">Heti pontátlag: 0.0</p>
+<p id="weeklyThrees">Heti triplaszázalék: 0%</p>
+</section>
+</section>
+<section id="myPlayer" class="page-section">
+<div class="section-heading">
+<div>
+<p class="eyebrow">PLAYER PROFILE</p>
+<h2>My Player</h2>
+<p class="section-description">
+                       Fejleszd a képességeidet 60-ról 99-es értékelésig.
+</p>
+</div>
+</div>
+<section class="player-overview panel">
+<div class="overall-block">
+<p class="eyebrow">OVERALL RATING</p>
+<div id="overallRating" class="overall-rating">60</div>
+<p id="playerTier" class="player-tier">ROOKIE</p>
+</div>
+<div class="player-info">
+<label for="playerName">Játékos neve</label>
+<input id="playerName" type="text" maxlength="40"
+                          placeholder="Írd be a neved">
+<label for="playerPosition">Poszt</label>
+<select id="playerPosition">
+<option value="PG">PG — Irányító</option>
+<option value="SG">SG — Dobóhátvéd</option>
+<option value="SF">SF — Kiscsatár</option>
+<option value="PF">PF — Erőcsatár</option>
+<option value="C">C — Center</option>
+</select>
+<p id="playerProgressText">0 / 44 attribútum fejlesztve</p>
+</div>
+</section>
+<div id="attributeCategories" class="attribute-categories">
+<section class="panel">
+<h3>Shooting</h3>
+<p>A dobásaid pontossága és sokoldalúsága.</p>
+<div id="attributes-shooting"></div>
+</section>
+<section class="panel">
+<h3>Ball Handling</h3>
+<p>Labdabiztonság, cselezés és labdavezetési sebesség.</p>
+<div id="attributes-handling"></div>
+</section>
+<section class="panel">
+<h3>Finishing</h3>
+<p>Befejezések a gyűrű közelében és a levegőben.</p>
+<div id="attributes-finishing"></div>
+</section>
+<section class="panel">
+<h3>Playmaking</h3>
+<p>Passzok, pályalátás és döntéshozatal.</p>
+<div id="attributes-playmaking"></div>
+</section>
+<section class="panel">
+<h3>Athleticism</h3>
+<p>Gyorsaság, ugrás, erőnlét és koordináció.</p>
+<div id="attributes-athleticism"></div>
+</section>
+<section class="panel">
+<h3>Defense</h3>
+<p>Védekezés, labdaszerzés és lepattanózás.</p>
+<div id="attributes-defense"></div>
+</section>
+</div>
+</section>
+<section id="challenges" class="page-section">
+<div class="section-heading">
+<div>
+<p class="eyebrow">PROVE YOUR SKILLS</p>
+<h2>Challenges</h2>
+<p class="section-description">
+                       Teljesíts mérhető feladatokat az attribútumaid fejlesztéséhez.
+</p>
+</div>
+</div>
+<section class="panel challenges-panel">
+<button
+
+        type="button"
+
+        id="toggleChallenges"
+
+        class="challenge-toggle"
+
+        aria-expanded="false"
+
+        aria-controls="challengeContent"
+>
+<span>
+<strong>Challenges</strong>
+<span class="challenge-toggle-subtitle">
+
+                Kihívások és képességfejlesztés
+</span>
+</span>
+<span id="challengeToggleIcon" class="challenge-toggle-icon">+</span>
+</button>
+<div id="challengeContent" hidden>
+<div class="challenge-toolbar">
+<label for="challengeCategory">Kategória</label>
+<select id="challengeCategory">
+<option value="all">Minden kategória</option>
+<option value="shooting">Shooting</option>
+<option value="handling">Ball Handling</option>
+<option value="finishing">Finishing</option>
+<option value="playmaking">Playmaking</option>
+<option value="athleticism">Athleticism</option>
+<option value="defense">Defense</option>
+</select>
+<label for="challengeDifficulty">Nehézség</label>
+<select id="challengeDifficulty">
+<option value="all">Minden nehézség</option>
+<option value="Bronze">Bronze</option>
+<option value="Silver">Silver</option>
+<option value="Gold">Gold</option>
+</select>
+</div>
+<div id="challengeList">
+<p>A kihívások betöltése folyamatban.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="gameSection" class="page-section">
+<section class="panel">
+<p class="eyebrow">GAME LOG</p>
+<h2>Meccs rögzítése</h2>
+<form id="gameForm">
+<label for="opponent">Ellenfél
+<input id="opponent" type="text" placeholder="Pl. Honvéd" required>
+</label>
+<label for="gameDate">Dátum
+<input id="gameDate" type="date" required>
+</label>
+<label for="points">Dobott pontok
+<input id="points" type="number" min="0" step="1" required>
+</label>
+<label for="threeMade">Bedobott tripla
+<input id="threeMade" type="number" min="0" step="1" value="0" required>
+</label>
+<label for="threeAttempted">Megkísérelt tripla
+<input id="threeAttempted" type="number" min="0" step="1" value="0" required>
+</label>
+<label for="rebounds">Lepattanók
+<input id="rebounds" type="number" min="0" step="1" value="0" required>
+</label>
+<label for="assists">Gólpasszok
+<input id="assists" type="number" min="0" step="1" value="0" required>
+</label>
+<button type="submit">Meccs mentése</button>
+</form>
+</section>
+<section class="panel">
+<h2>Meccselőzmények</h2>
+<div id="gameList">
+<p>Még nincs rögzített meccsed.</p>
+</div>
+</section>
+</section>
+<section id="workoutSection" class="page-section">
+<section class="panel">
+<p class="eyebrow">TRAINING LOG</p>
+<h2>Edzésnapló</h2>
+<form id="workoutForm">
+<label for="workoutType">Edzés típusa
+<select id="workoutType" required>
+<option value="Doboedzes">Dobóedzés</option>
+<option value="Labdakezeles">Labdakezelés</option>
+<option value="Eronlet">Erőnlét</option>
+<option value="Ugroedzes">Ugróedzés</option>
+<option value="Csapatedzes">Csapatedzés</option>
+</select>
+</label>
+<label for="workoutDuration">Időtartam (perc)
+<input id="workoutDuration" type="number" min="1" step="1" required>
+</label>
+<label for="workoutDate">Dátum
+<input id="workoutDate" type="date" required>
+</label>
+<label for="workoutNote">Megjegyzés
+<input id="workoutNote" type="text" placeholder="Pl. 100 sikeres tripla">
+</label>
+<button type="submit">Edzés mentése</button>
+</form>
+<div id="workoutList">
+<p>Még nincs rögzített edzésed.</p>
+</div>
+</section>
+</section>
+</main>
+<footer class="app-footer">
+<p>HoopTracker · Minden edzés számít.</p>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
