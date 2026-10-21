@@ -6,7 +6,9 @@ const workoutList = $("workoutList");
 const pointsGoalInput = $("pointsGoal");
 let games = JSON.parse(localStorage.getItem("hoopTrackerGames") || "[]");
 let workouts = JSON.parse(localStorage.getItem("hoopTrackerWorkouts") || "[]");
-pointsGoalInput.value = localStorage.getItem("hoopTrackerPointsGoal") || "30";
+if (pointsGoalInput) {
+   pointsGoalInput.value = localStorage.getItem("hoopTrackerPointsGoal") || "30";
+}
 const ATTRIBUTE_GROUPS = [
    {
        id: "shooting",
@@ -90,7 +92,11 @@ const ATTRIBUTE_GROUPS = [
    }
 ];
 const allAttributes = ATTRIBUTE_GROUPS.flatMap(group =>
-   group.attributes.map(([id, name]) => ({ id, name, group: group.id }))
+   group.attributes.map(([id, name]) => ({
+       id,
+       name,
+       group: group.id
+   }))
 );
 const savedAttributes = JSON.parse(
    localStorage.getItem("hoopTrackerAttributes") || "{}"
@@ -98,9 +104,10 @@ const savedAttributes = JSON.parse(
 const attributes = Object.fromEntries(
    allAttributes.map(attribute => [
 attribute.id,
-       Math.max(60, Math.min(99,
-           Number(savedAttributes[attribute.id]) || 60
-       ))
+       Math.max(
+           60,
+           Math.min(99, Number(savedAttributes[attribute.id]) || 60)
+       )
    ])
 );
 let playerProfile = JSON.parse(
@@ -110,7 +117,8 @@ let playerProfile = JSON.parse(
 let completedChallenges = JSON.parse(
    localStorage.getItem("hoopTrackerCompletedChallenges") || "[]"
 );
-const CHALLENGES = [
+// A régi kihívások megmaradnak.
+const LEGACY_CHALLENGES = [
    {
        id: "shoot-ft-bronze",
        category: "shooting",
@@ -382,6 +390,87 @@ const CHALLENGES = [
        reward: 2
    }
 ];
+// Minden képességhez külön, fokozatosan feloldható kihívások készülnek.
+const GENERATED_CHALLENGES = allAttributes.flatMap(attribute => {
+   const tiers = [
+       { difficulty: "Bronze", count: 8, reward: 1 },
+       { difficulty: "Silver", count: 6, reward: 2 },
+       { difficulty: "Gold", count: 4, reward: 3 },
+       { difficulty: "Elite", count: 3, reward: 3 }
+   ];
+   const challenges = [];
+   let progression = 0;
+   tiers.forEach(tier => {
+       for (let i = 1; i <= tier.count; i++) {
+           progression++;
+           const repetitions = 10 + progression * 2;
+           const seconds = 20 + progression * 5;
+           let description;
+           switch (attribute.group) {
+               case "shooting":
+                   description =
+                       `Gyakorolj ${attribute.name} dobásokat. ` +
+                       `Végezz ${repetitions} dobáskísérletet, ` +
+                       `és rögzítsd a sikeres dobásaid számát.`;
+                   break;
+               case "handling":
+                   description =
+                       `Fejleszd a ${attribute.name} képességedet ` +
+                       `${seconds} másodperc célzott gyakorlással. ` +
+                       `Törekedj a szabályos labdavezetésre.`;
+                   break;
+               case "finishing":
+                   description =
+                       `Gyakorold a ${attribute.name} befejezést ` +
+                       `${repetitions} alkalommal. ` +
+                       `Figyelj a helyes technikára, és ne erőltesd ` +
+                       `a fájdalmas mozdulatokat.`;
+                   break;
+               case "playmaking":
+                   description =
+                       `Fejleszd a ${attribute.name} képességedet. ` +
+                       `Végezz ${repetitions} passz- vagy ` +
+                       `játékhelyzet-gyakorlatot, és figyelj ` +
+                       `a pontos végrehajtásra.`;
+                   break;
+               case "athleticism":
+                   description =
+                       `Gyakorold a ${attribute.name} képességet ` +
+                       `kontrollált, szabályos mozgással. ` +
+                       `Végezz ${Math.min(i + 2, 8)} minőségi ismétlést, ` +
+                       `közöttük elegendő pihenővel. ` +
+                       `Fájdalom esetén állj meg.`;
+                   break;
+               case "defense":
+                   description =
+                       `Fejleszd a ${attribute.name} képességedet. ` +
+                       `Végezz ${repetitions} szabályos védekező ` +
+                       `gyakorlatot, és figyelj a lábmunkára ` +
+                       `és a kontrollra.`;
+                   break;
+               default:
+                   description =
+                       `Gyakorold a ${attribute.name} képességet ` +
+                       `${repetitions} szabályos ismétléssel.`;
+           }
+           challenges.push({
+               id: `generated-${attribute.id}-${progression}`,
+               category: attribute.group,
+               attribute: attribute.id,
+               title: `${attribute.name} — ${tier.difficulty} ${i}`,
+               difficulty: tier.difficulty,
+               description,
+               reward: tier.reward,
+               progression
+           });
+       }
+   });
+   return challenges;
+});
+const CHALLENGES = [
+   ...LEGACY_CHALLENGES,
+   ...GENERATED_CHALLENGES
+];
 function savePlayerData() {
    localStorage.setItem("hoopTrackerAttributes", JSON.stringify(attributes));
    localStorage.setItem("hoopTrackerPlayer", JSON.stringify(playerProfile));
@@ -438,27 +527,52 @@ fill.id = "attribute-fill-" + id;
 }
 function updatePlayerRating() {
    const rating = getOverallRating();
-   $("overallRating").textContent = rating;
-   $("playerTier").textContent = getPlayerTier(rating);
+   const overallElement = $("overallRating");
+   const tierElement = $("playerTier");
+   const progressElement = $("playerProgressText");
+   if (overallElement) overallElement.textContent = rating;
+   if (tierElement) tierElement.textContent = getPlayerTier(rating);
    const improved = Object.values(attributes).filter(value => value > 60).length;
-   $("playerProgressText").textContent =
-       `${improved} / ${allAttributes.length} képesség fejlesztve az alapérték fölé`;
+   if (progressElement) {
+       progressElement.textContent =
+           `${improved} / ${allAttributes.length} képesség fejlesztve az alapérték fölé`;
+   }
+}
+// A generált kihívásoknál csak az adott képesség következő feladata nyílik meg.
+function isChallengeUnlocked(challenge) {
+   if (challenge.progression === undefined) {
+       return true;
+   }
+   const previousChallenges = GENERATED_CHALLENGES.filter(item =>
+       item.attribute === challenge.attribute &&
+       item.progression < challenge.progression
+   );
+   return previousChallenges.every(item =>
+       completedChallenges.includes(item.id)
+   );
 }
 function renderChallenges() {
    const container = $("challengeList");
-   const categoryFilter = $("challengeCategory").value;
-   const difficultyFilter = $("challengeDifficulty").value;
+   const categoryElement = $("challengeCategory");
+   const difficultyElement = $("challengeDifficulty");
+   if (!container || !categoryElement || !difficultyElement) return;
+   const categoryFilter = categoryElement.value;
+   const difficultyFilter = difficultyElement.value;
    container.innerHTML = "";
    const filteredChallenges = CHALLENGES.filter(challenge => {
+       if (!isChallengeUnlocked(challenge)) return false;
        const categoryMatches =
-           categoryFilter === "all" || challenge.category === categoryFilter;
+           categoryFilter === "all" ||
+           challenge.category === categoryFilter;
        const difficultyMatches =
            difficultyFilter === "all" ||
-           challenge.difficulty.toLowerCase() === difficultyFilter.toLowerCase();
+           challenge.difficulty.toLowerCase() ===
+               difficultyFilter.toLowerCase();
        return categoryMatches && difficultyMatches;
    });
    if (filteredChallenges.length === 0) {
-       container.innerHTML = "<p>Nincs találat ezekkel a szűrőkkel.</p>";
+       container.innerHTML =
+           "<p>Nincs elérhető kihívás ezekkel a szűrőkkel. Próbálj másik szintet vagy kategóriát.</p>";
        return;
    }
    filteredChallenges.forEach(challenge => {
@@ -485,9 +599,13 @@ function renderChallenges() {
        reward.textContent = `+${challenge.reward} képességpont`;
        meta.append(categoryTag, difficultyTag, reward);
        const button = document.createElement("button");
-       button.textContent = completed ? "Teljesítve" : "Kihívás teljesítése";
+       button.type = "button";
+       button.textContent = completed
+           ? "Teljesítve"
+           : "Kihívás teljesítése";
        button.disabled = completed;
        button.addEventListener("click", () => {
+           if (completedChallenges.includes(challenge.id)) return;
            const confirmed = confirm(
                `Valóban teljesítetted ezt a kihívást?\n\n${challenge.title}`
            );
@@ -522,6 +640,7 @@ function formatDate(dateString) {
    });
 }
 function renderGames() {
+   if (!gameList) return;
    gameList.innerHTML = "";
    if (games.length === 0) {
        gameList.innerHTML = "<p>Még nincs rögzített mérkőzés.</p>";
@@ -558,6 +677,7 @@ function renderGames() {
        });
 }
 function renderWorkouts() {
+   if (!workoutList) return;
    workoutList.innerHTML = "";
    if (workouts.length === 0) {
        workoutList.innerHTML = "<p>Még nincs rögzített edzés.</p>";
@@ -607,25 +727,42 @@ function updateDashboard() {
    const totalAssists = games.reduce(
        (sum, game) => sum + Number(game.assists || 0), 0
    );
-   $("pointsAverage").textContent = totalGames
-       ? (totalPoints / totalGames).toFixed(1)
-       : "0.0";
-   $("threePointPercentage").textContent = totalThreesAttempted
-       ? Math.round(totalThreesMade / totalThreesAttempted * 100) + "%"
-       : "0%";
-   $("reboundsAverage").textContent = totalGames
-       ? (totalRebounds / totalGames).toFixed(1)
-       : "0.0";
-   $("assistsAverage").textContent = totalGames
-       ? (totalAssists / totalGames).toFixed(1)
-       : "0.0";
-   const goal = Math.max(1, Number(pointsGoalInput.value) || 30);
+   if ($("pointsAverage")) {
+       $("pointsAverage").textContent = totalGames
+           ? (totalPoints / totalGames).toFixed(1)
+           : "0.0";
+   }
+   if ($("threePointPercentage")) {
+       $("threePointPercentage").textContent = totalThreesAttempted
+           ? Math.round(totalThreesMade / totalThreesAttempted * 100) + "%"
+           : "0%";
+   }
+   if ($("reboundsAverage")) {
+       $("reboundsAverage").textContent = totalGames
+           ? (totalRebounds / totalGames).toFixed(1)
+           : "0.0";
+   }
+   if ($("assistsAverage")) {
+       $("assistsAverage").textContent = totalGames
+           ? (totalAssists / totalGames).toFixed(1)
+           : "0.0";
+   }
+   const goal = Math.max(
+       1,
+       Number(pointsGoalInput?.value) || 30
+   );
    localStorage.setItem("hoopTrackerPointsGoal", String(goal));
    const average = totalGames ? totalPoints / totalGames : 0;
    const goalProgress = Math.min(100, average / goal * 100);
-   $("goalProgress").textContent = `${average.toFixed(1)} / ${goal}`;
-   $("goalBar").style.width = `${goalProgress}%`;
-   $("goalPercentage").textContent = `${Math.round(goalProgress)}%`;
+   if ($("goalProgress")) {
+       $("goalProgress").textContent = `${average.toFixed(1)} / ${goal}`;
+   }
+   if ($("goalBar")) {
+       $("goalBar").style.width = `${goalProgress}%`;
+   }
+   if ($("goalPercentage")) {
+       $("goalPercentage").textContent = `${Math.round(goalProgress)}%`;
+   }
    const today = new Date();
    today.setHours(0, 0, 0, 0);
    const weekStart = new Date(today);
@@ -640,67 +777,97 @@ function updateDashboard() {
    const weeklyThrees = weeklyGames.reduce(
        (sum, game) => sum + Number(game.threeMade || 0), 0
    );
-   $("weeklyGames").textContent = weeklyGames.length;
-   $("weeklyPoints").textContent = weeklyPoints;
-   $("weeklyAverage").textContent = weeklyGames.length
-       ? (weeklyPoints / weeklyGames.length).toFixed(1)
-       : "0.0";
-   $("weeklyThrees").textContent = weeklyThrees;
-  renderGames();
-renderRecords();
-}
-form.addEventListener("submit", event => {
-   event.preventDefault();
-   const threeMade = Number($("threeMade").value);
-   const threeAttempted = Number($("threeAttempted").value);
-   if (threeMade > threeAttempted) {
-       alert("A bedobott triplák száma nem lehet nagyobb a kísérletek számánál.");
-       return;
+   if ($("weeklyGames")) {
+       $("weeklyGames").textContent = weeklyGames.length;
    }
-   const game = {
-       id: Date.now(),
-       opponent: $("opponent").value.trim(),
-       date: $("gameDate").value,
-       points: Number($("points").value),
-       threeMade,
-       threeAttempted,
-       rebounds: Number($("rebounds").value),
-       assists: Number($("assists").value)
-   };
-   games.push(game);
-   saveGames();
-   form.reset();
-   $("gameDate").value = getLocalDateString();
-   updateDashboard();
-});
-workoutForm.addEventListener("submit", event => {
-   event.preventDefault();
-   const workout = {
-       id: Date.now(),
-       type: $("workoutType").value,
-       duration: Number($("workoutDuration").value),
-       date: $("workoutDate").value,
-       note: $("workoutNote").value.trim()
-   };
-   workouts.push(workout);
-   saveWorkouts();
-   workoutForm.reset();
-   $("workoutDate").value = getLocalDateString();
-   renderWorkouts();
-});
-pointsGoalInput.addEventListener("change", updateDashboard);
-$("playerName").addEventListener("input", () => {
-   playerProfile.name = $("playerName").value;
-   savePlayerData();
-});
-$("playerPosition").addEventListener("change", () => {
-   playerProfile.position = $("playerPosition").value;
-   savePlayerData();
-});
-$("challengeCategory").addEventListener("change", renderChallenges);
-$("challengeDifficulty").addEventListener("change", renderChallenges);
-$("playerName").value = playerProfile.name || "";
-$("playerPosition").value = playerProfile.position || "PG";
+   if ($("weeklyPoints")) {
+       $("weeklyPoints").textContent = weeklyPoints;
+   }
+   if ($("weeklyAverage")) {
+       $("weeklyAverage").textContent = weeklyGames.length
+           ? (weeklyPoints / weeklyGames.length).toFixed(1)
+           : "0.0";
+   }
+   if ($("weeklyThrees")) {
+       $("weeklyThrees").textContent = weeklyThrees;
+   }
+   renderGames();
+   renderRecords();
+}
+if (form) {
+   form.addEventListener("submit", event => {
+       event.preventDefault();
+       const threeMade = Number($("threeMade").value);
+       const threeAttempted = Number($("threeAttempted").value);
+       if (threeMade > threeAttempted) {
+           alert("A bedobott triplák száma nem lehet nagyobb a kísérletek számánál.");
+           return;
+       }
+       const game = {
+           id: Date.now(),
+           opponent: $("opponent").value.trim(),
+           date: $("gameDate").value,
+           points: Number($("points").value),
+           threeMade,
+           threeAttempted,
+           rebounds: Number($("rebounds").value),
+           assists: Number($("assists").value)
+       };
+       games.push(game);
+       saveGames();
+       form.reset();
+       if ($("gameDate")) {
+           $("gameDate").value = getLocalDateString();
+       }
+       updateDashboard();
+   });
+}
+if (workoutForm) {
+   workoutForm.addEventListener("submit", event => {
+       event.preventDefault();
+       const workout = {
+           id: Date.now(),
+           type: $("workoutType").value,
+           duration: Number($("workoutDuration").value),
+           date: $("workoutDate").value,
+           note: $("workoutNote").value.trim()
+       };
+       workouts.push(workout);
+       saveWorkouts();
+       workoutForm.reset();
+       if ($("workoutDate")) {
+           $("workoutDate").value = getLocalDateString();
+       }
+       renderWorkouts();
+   });
+}
+if (pointsGoalInput) {
+   pointsGoalInput.addEventListener("change", updateDashboard);
+}
+if ($("playerName")) {
+   $("playerName").addEventListener("input", () => {
+       playerProfile.name = $("playerName").value;
+       savePlayerData();
+   });
+}
+if ($("playerPosition")) {
+   $("playerPosition").addEventListener("change", () => {
+       playerProfile.position = $("playerPosition").value;
+       savePlayerData();
+   });
+}
+if ($("challengeCategory")) {
+   $("challengeCategory").addEventListener("change", renderChallenges);
+}
+if ($("challengeDifficulty")) {
+   $("challengeDifficulty").addEventListener("change", renderChallenges);
+}
+if ($("playerName")) {
+   $("playerName").value = playerProfile.name || "";
+}
+if ($("playerPosition")) {
+   $("playerPosition").value = playerProfile.position || "PG";
+}
 function getLocalDateString() {
    const now = new Date();
    const year = now.getFullYear();
@@ -711,10 +878,6 @@ function getLocalDateString() {
 const todayString = getLocalDateString();
 if ($("gameDate")) $("gameDate").value = todayString;
 if ($("workoutDate")) $("workoutDate").value = todayString;
-renderAttributes();
-renderChallenges();
-renderWorkouts();
-updateDashboard();
 function renderRecords() {
    const currentYear = new Date().getFullYear();
    const recordTypes = [
@@ -797,34 +960,22 @@ function renderRecords() {
    });
 }
 const toggleChallengesButton = $("toggleChallenges");
-
 const challengeContent = $("challengeContent");
-
 const challengeToggleIcon = $("challengeToggleIcon");
-
 if (toggleChallengesButton && challengeContent) {
-
-    toggleChallengesButton.addEventListener("click", () => {
-
-        const isOpen = !challengeContent.hidden;
-
-        challengeContent.hidden = isOpen;
-
-        toggleChallengesButton.setAttribute(
-
-            "aria-expanded",
-
-            String(!isOpen)
-
-        );
-
-        if (challengeToggleIcon) {
-
-            challengeToggleIcon.textContent = isOpen ? "+" : "−";
-
-        }
-
-    });
-
+   toggleChallengesButton.addEventListener("click", () => {
+       const isOpen = !challengeContent.hidden;
+       challengeContent.hidden = isOpen;
+       toggleChallengesButton.setAttribute(
+           "aria-expanded",
+           String(!isOpen)
+       );
+       if (challengeToggleIcon) {
+           challengeToggleIcon.textContent = isOpen ? "+" : "−";
+       }
+   });
 }
- 
+renderAttributes();
+renderChallenges();
+renderWorkouts();
+updateDashboard();

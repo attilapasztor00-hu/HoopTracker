@@ -1592,3 +1592,35 @@ textarea {
        border-radius: 24px;
    }
 }
+/* Challenges lenyitható fül: több hely a szélektől */
+
+.challenge-toggle {
+
+    padding: 18px 22px;
+
+}
+
+/* Szezoncél: a beviteli mező legyen középre igazítva */
+
+#pointsGoal {
+
+    display: block;
+
+    width: 100%;
+
+    max-width: 260px;
+
+    margin: 14px auto;
+
+    text-align: center;
+
+    font-size: 1.2rem;
+
+    font-weight: 600;
+
+}
+ #pointsGoal {
+   margin-left: 0;
+   margin-right: 0;
+   text-align: center;
+}

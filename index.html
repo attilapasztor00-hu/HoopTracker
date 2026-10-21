@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080d18">
+<meta name="description" content="HoopTracker – személyes kosárlabda-statisztikák, kihívások és fejlődéskövetés.">
 <title>HoopTracker</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -15,7 +16,8 @@
 </div>
 <div class="header-status">
 <span class="status-dot"></span>
-           PLAYER DEVELOPMENT
+
+            PLAYER DEVELOPMENT
 </div>
 </header>
 <nav class="main-nav" aria-label="Fő navigáció">
@@ -27,6 +29,7 @@
 <a class="nav-link" href="#workoutSection">Edzésnapló</a>
 </nav>
 <main>
+<!-- DASHBOARD -->
 <section id="dashboard" class="page-section">
 <div class="section-heading">
 <div>
@@ -77,13 +80,15 @@
 <p id="weeklyThrees">Heti triplaszázalék: 0%</p>
 </section>
 </section>
+<!-- MY PLAYER -->
 <section id="myPlayer" class="page-section">
 <div class="section-heading">
 <div>
 <p class="eyebrow">PLAYER PROFILE</p>
 <h2>My Player</h2>
 <p class="section-description">
-                       Fejleszd a képességeidet 60-ról 99-es értékelésig.
+
+                        Fejleszd a képességeidet 60-ról 99-es értékelésig.
 </p>
 </div>
 </div>
@@ -95,8 +100,16 @@
 </div>
 <div class="player-info">
 <label for="playerName">Játékos neve</label>
-<input id="playerName" type="text" maxlength="40"
-                          placeholder="Írd be a neved">
+<input
+
+                        id="playerName"
+
+                        type="text"
+
+                        maxlength="40"
+
+                        placeholder="Írd be a neved"
+>
 <label for="playerPosition">Poszt</label>
 <select id="playerPosition">
 <option value="PG">PG — Irányító</option>
@@ -141,34 +154,36 @@
 </section>
 </div>
 </section>
+<!-- CHALLENGES -->
 <section id="challenges" class="page-section">
 <div class="section-heading">
 <div>
 <p class="eyebrow">PROVE YOUR SKILLS</p>
 <h2>Challenges</h2>
 <p class="section-description">
-                       Teljesíts mérhető feladatokat az attribútumaid fejlesztéséhez.
+
+                        Teljesíts mérhető feladatokat az attribútumaid fejlesztéséhez.
 </p>
 </div>
 </div>
 <section class="panel challenges-panel">
 <button
 
-        type="button"
+                    type="button"
 
-        id="toggleChallenges"
+                    id="toggleChallenges"
 
-        class="challenge-toggle"
+                    class="challenge-toggle"
 
-        aria-expanded="false"
+                    aria-expanded="false"
 
-        aria-controls="challengeContent"
+                    aria-controls="challengeContent"
 >
 <span>
 <strong>Challenges</strong>
 <span class="challenge-toggle-subtitle">
 
-                Kihívások és képességfejlesztés
+                            Kihívások és képességfejlesztés
 </span>
 </span>
 <span id="challengeToggleIcon" class="challenge-toggle-icon">+</span>
@@ -191,21 +206,87 @@
 <option value="Bronze">Bronze</option>
 <option value="Silver">Silver</option>
 <option value="Gold">Gold</option>
+<option value="Elite">Elite</option>
 </select>
 </div>
-<div id="challengeList">
+<div id="challengeList" aria-live="polite">
 <p>A kihívások betöltése folyamatban.</p>
 </div>
 </div>
 </section>
 </section>
+<!-- RECORDS -->
+<section id="records" class="page-section">
+<section class="panel">
+<p class="eyebrow">PERSONAL BESTS</p>
+<h2>Összesített rekordok</h2>
+<div class="stats">
+<div class="card">
+<p>Legtöbb pont egy meccsen</p>
+<h2 id="recordPoints">0</h2>
+<span id="recordPointsDetails">Még nincs rögzített meccs.</span>
+</div>
+<div class="card">
+<p>Legtöbb lepattanó egy meccsen</p>
+<h2 id="recordRebounds">0</h2>
+<span id="recordReboundsDetails">Még nincs rögzített meccs.</span>
+</div>
+<div class="card">
+<p>Legtöbb gólpassz egy meccsen</p>
+<h2 id="recordAssists">0</h2>
+<span id="recordAssistsDetails">Még nincs rögzített meccs.</span>
+</div>
+<div class="card">
+<p>Legtöbb bedobott tripla egy meccsen</p>
+<h2 id="recordThrees">0</h2>
+<span id="recordThreesDetails">Még nincs rögzített meccs.</span>
+</div>
+</div>
+</section>
+<section class="panel">
+<p class="eyebrow">CURRENT SEASON</p>
+<h2>Idei szezon rekordjai</h2>
+<div class="stats">
+<div class="card">
+<p>Legtöbb pont</p>
+<h2 id="seasonRecordPoints">0</h2>
+<span id="seasonRecordPointsDetails">Még nincs idei meccs.</span>
+</div>
+<div class="card">
+<p>Legtöbb lepattanó</p>
+<h2 id="seasonRecordRebounds">0</h2>
+<span id="seasonRecordReboundsDetails">Még nincs idei meccs.</span>
+</div>
+<div class="card">
+<p>Legtöbb gólpassz</p>
+<h2 id="seasonRecordAssists">0</h2>
+<span id="seasonRecordAssistsDetails">Még nincs idei meccs.</span>
+</div>
+<div class="card">
+<p>Legtöbb bedobott tripla</p>
+<h2 id="seasonRecordThrees">0</h2>
+<span id="seasonRecordThreesDetails">Még nincs idei meccs.</span>
+</div>
+</div>
+</section>
+</section>
+<!-- GAME LOG -->
 <section id="gameSection" class="page-section">
 <section class="panel">
 <p class="eyebrow">GAME LOG</p>
 <h2>Meccs rögzítése</h2>
 <form id="gameForm">
 <label for="opponent">Ellenfél
-<input id="opponent" type="text" placeholder="Pl. Honvéd" required>
+<input
+
+                            id="opponent"
+
+                            type="text"
+
+                            placeholder="Pl. Honvéd"
+
+                            required
+>
 </label>
 <label for="gameDate">Dátum
 <input id="gameDate" type="date" required>
@@ -214,16 +295,68 @@
 <input id="points" type="number" min="0" step="1" required>
 </label>
 <label for="threeMade">Bedobott tripla
-<input id="threeMade" type="number" min="0" step="1" value="0" required>
+<input
+
+                            id="threeMade"
+
+                            type="number"
+
+                            min="0"
+
+                            step="1"
+
+                            value="0"
+
+                            required
+>
 </label>
 <label for="threeAttempted">Megkísérelt tripla
-<input id="threeAttempted" type="number" min="0" step="1" value="0" required>
+<input
+
+                            id="threeAttempted"
+
+                            type="number"
+
+                            min="0"
+
+                            step="1"
+
+                            value="0"
+
+                            required
+>
 </label>
 <label for="rebounds">Lepattanók
-<input id="rebounds" type="number" min="0" step="1" value="0" required>
+<input
+
+                            id="rebounds"
+
+                            type="number"
+
+                            min="0"
+
+                            step="1"
+
+                            value="0"
+
+                            required
+>
 </label>
 <label for="assists">Gólpasszok
-<input id="assists" type="number" min="0" step="1" value="0" required>
+<input
+
+                            id="assists"
+
+                            type="number"
+
+                            min="0"
+
+                            step="1"
+
+                            value="0"
+
+                            required
+>
 </label>
 <button type="submit">Meccs mentése</button>
 </form>
@@ -235,6 +368,7 @@
 </div>
 </section>
 </section>
+<!-- WORKOUT LOG -->
 <section id="workoutSection" class="page-section">
 <section class="panel">
 <p class="eyebrow">TRAINING LOG</p>
@@ -250,13 +384,31 @@
 </select>
 </label>
 <label for="workoutDuration">Időtartam (perc)
-<input id="workoutDuration" type="number" min="1" step="1" required>
+<input
+
+                            id="workoutDuration"
+
+                            type="number"
+
+                            min="1"
+
+                            step="1"
+
+                            required
+>
 </label>
 <label for="workoutDate">Dátum
 <input id="workoutDate" type="date" required>
 </label>
 <label for="workoutNote">Megjegyzés
-<input id="workoutNote" type="text" placeholder="Pl. 100 sikeres tripla">
+<input
+
+                            id="workoutNote"
+
+                            type="text"
+
+                            placeholder="Pl. 100 sikeres tripla"
+>
 </label>
 <button type="submit">Edzés mentése</button>
 </form>
@@ -272,3 +424,4 @@
 <script src="script.js"></script>
 </body>
 </html>
+ 
