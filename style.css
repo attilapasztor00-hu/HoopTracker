@@ -1624,3 +1624,143 @@ textarea {
    margin-right: 0;
    text-align: center;
 }
+/* =====================================
+  HOOPTRACKER — MOBILOS FINOMÍTÁSOK
+  ===================================== */
+/* Kényelmesebb távolság a mezőfeliratok és dobozok között */
+#gameForm label,
+#workoutForm label {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   margin-bottom: 20px;
+   line-height: 1.5;
+}
+/* Egységes, kényelmesen használható beviteli mezők */
+#gameForm input,
+#workoutForm input,
+#gameForm select,
+#workoutForm select {
+   width: 100%;
+   min-height: 48px;
+   margin-top: 0;
+   padding: 12px 14px;
+   border-radius: 12px;
+}
+/* A gombok se legyenek túl közel az utolsó mezőhöz */
+#gameForm button,
+#workoutForm button {
+   margin-top: 6px;
+   min-height: 48px;
+}
+/* =====================================
+  IPHONE ALSÓ NAVIGÁCIÓ
+  ===================================== */
+@media (max-width: 700px) {
+   body {
+       padding-bottom: calc(94px + env(safe-area-inset-bottom, 0px));
+   }
+   .main-nav {
+       position: fixed;
+       z-index: 1000;
+       left: 0;
+       right: 0;
+       bottom: 0;
+       display: flex;
+       align-items: stretch;
+       justify-content: space-around;
+       gap: 0;
+       padding: 9px 4px calc(9px + env(safe-area-inset-bottom, 0px));
+       background: rgba(8, 13, 24, 0.76);
+       -webkit-backdrop-filter: blur(24px) saturate(160%);
+       backdrop-filter: blur(24px) saturate(160%);
+       border-top: 1px solid rgba(255, 255, 255, 0.12);
+       box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.18);
+       overflow-x: auto;
+       scrollbar-width: none;
+   }
+   .main-nav::-webkit-scrollbar {
+       display: none;
+   }
+   .main-nav .nav-link {
+       flex: 1 0 0;
+       min-width: 0;
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       justify-content: center;
+       gap: 5px;
+       padding: 7px 2px;
+       border-radius: 12px;
+       text-align: center;
+       white-space: nowrap;
+       font-size: 9px;
+       line-height: 1.2;
+       text-decoration: none;
+       opacity: 0.78;
+       transition: background 0.2s ease, opacity 0.2s ease;
+   }
+   /* Egyszerű, egységes navigációs ikonok */
+   .main-nav .nav-link::before {
+       font-size: 19px;
+       line-height: 1;
+       font-weight: 400;
+   }
+   .main-nav .nav-link[href="#dashboard"]::before {
+       content: "⌂";
+   }
+   .main-nav .nav-link[href="#myPlayer"]::before {
+       content: "◎";
+   }
+   .main-nav .nav-link[href="#challenges"]::before {
+       content: "◇";
+   }
+   .main-nav .nav-link[href="#records"]::before {
+       content: "▤";
+   }
+   .main-nav .nav-link[href="#gameSection"]::before {
+       content: "◷";
+   }
+   .main-nav .nav-link[href="#workoutSection"]::before {
+       content: "↗";
+   }
+   .main-nav .nav-link.active {
+       opacity: 1;
+       background: rgba(100, 150, 255, 0.12);
+       color: #8bb8ff;
+   }
+   /* A menü ne takarja ki a görgetett tartalom végét */
+   main {
+       padding-bottom: 16px;
+   }
+   /* Jobb oldalsó térköz a paneleknek és a formoknak */
+   .panel {
+       min-width: 0;
+   }
+   #gameForm,
+   #workoutForm {
+       gap: 4px;
+   }
+   #gameForm label,
+   #workoutForm label {
+       margin-bottom: 16px;
+       gap: 9px;
+   }
+   /* Jobb olvashatóság a telefonon */
+   #gameForm input,
+   #workoutForm input,
+   #gameForm select,
+   #workoutForm select {
+       font-size: 16px;
+   }
+   /* A lenyitható kihívásfül belső térköze */
+   .challenge-toggle {
+       padding: 18px 22px;
+   }
+}
+/* Csökkentett animáció, ha a telefon ezt kéri */
+@media (prefers-reduced-motion: reduce) {
+   .main-nav .nav-link {
+       transition: none;
+   }
+}
