@@ -1007,7 +1007,7 @@ updateDashboard();
            : "none";
        indicator.style.width = `${linkRect.width}px`;
        indicator.style.transform =
-           `translateX(${linkRect.left - navRect.left - nav.clientLeft}px)`;
+           `translateX(${linkRect.left - navRect.left - nav.clientLeft - 6}px)`;
        indicator.style.opacity = "1";
        if (!animate) {
            requestAnimationFrame(() => {

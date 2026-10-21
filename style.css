@@ -2002,7 +2002,7 @@ html {
    body .main-nav .nav-indicator {
        position: absolute;
        z-index: 0;
-       left: 6px;
+       left: 0;
        top: 6px;
        width: 0;
        height: 50px;
