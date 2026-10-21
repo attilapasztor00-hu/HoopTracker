@@ -988,92 +988,214 @@ renderAttributes();
 renderChallenges();
 renderWorkouts();
 updateDashboard();
-/* HOOPTRACKER — LIQUID GLASS NAVIGATION */
+/* HOOPTRACKER — SMOOTH IPHONE LIQUID GLASS NAV */
 (() => {
-   const nav = document.querySelector(".main-nav");
-   if (!nav) return;
-   const links = [...nav.querySelectorAll(".nav-link")];
-   const indicator = nav.querySelector(".nav-indicator");
-   if (!links.length || !indicator) return;
-   let activeLink = null;
-   let animationFrame = null;
-   function moveIndicator(link, animate = true) {
-       if (!link) return;
-       const navRect = nav.getBoundingClientRect();
-       const linkRect = link.getBoundingClientRect();
-       if (!navRect.width || !linkRect.width) return;
-       indicator.style.transition = animate
-           ? ""
-           : "none";
-       indicator.style.width = `${linkRect.width}px`;
-       indicator.style.transform =
-           `translateX(${linkRect.left - navRect.left - nav.clientLeft - 6}px)`;
-       indicator.style.opacity = "1";
-       if (!animate) {
-           requestAnimationFrame(() => {
-               indicator.style.transition = "";
-           });
-       }
-       activeLink = link;
-   }
-   function setActive(link, animate = true) {
-       if (!link) return;
-       links.forEach(item => {
-           const active = item === link;
-           item.classList.toggle("active", active);
-           if (active) {
-               item.setAttribute("aria-current", "location");
-           } else {
-               item.removeAttribute("aria-current");
-           }
-       });
-       moveIndicator(link, animate);
-   }
-   links.forEach(link => {
-       link.addEventListener("click", () => {
-           setActive(link);
-       });
-   });
-   function updateFromScroll() {
-       animationFrame = null;
-       let bestLink = links[0];
-       let bestDistance = Infinity;
-       for (const link of links) {
-           const target = document.querySelector(
-               link.getAttribute("href")
-           );
-           if (!target) continue;
-           const distance = Math.abs(
-               target.getBoundingClientRect().top - 120
-           );
-           if (target.getBoundingClientRect().top <= 160 &&
-               distance < bestDistance) {
-               bestDistance = distance;
-               bestLink = link;
-           }
-       }
-       if (bestLink !== activeLink) {
-           setActive(bestLink);
-       } else {
-           moveIndicator(activeLink);
-       }
-   }
-   window.addEventListener("scroll", () => {
-       if (animationFrame !== null) return;
-       animationFrame = requestAnimationFrame(updateFromScroll);
-   }, { passive: true });
-   window.addEventListener("resize", () => {
-       moveIndicator(activeLink, false);
-   });
-   window.addEventListener("load", () => {
-       const initial =
-           links.find(link => link.classList.contains("active")) ||
-           links[0];
-       setActive(initial, false);
-       updateFromScroll();
-   });
-   const initial =
-       links.find(link => link.classList.contains("active")) ||
-       links[0];
-   setActive(initial, false);
+  "use strict";
+
+  const nav = document.querySelector(".main-nav");
+  if (!nav) return;
+
+  const links = [...nav.querySelectorAll(".nav-link")];
+  const indicator = nav.querySelector(".nav-indicator");
+
+  if (!links.length || !indicator) return;
+
+  const isIOS =
+    /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+    (
+      navigator.platform === "MacIntel" &&
+      navigator.maxTouchPoints > 1
+    );
+
+  const mobileQuery = window.matchMedia("(max-width: 700px)");
+
+  let activeLink = null;
+  let scrollFrame = 0;
+  let resizeFrame = 0;
+
+  /*
+   * A mozgó üvegjelölő kizárólag iOS-es,
+   * legfeljebb 700 px széles nézetben aktív.
+   */
+  function shouldAnimateIndicator() {
+    return isIOS && mobileQuery.matches;
+  }
+
+  function moveIndicator(link, instant = false) {
+    if (!link || !shouldAnimateIndicator()) {
+      indicator.style.opacity = "0";
+      return;
+    }
+
+    const navRect = nav.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+
+    if (!navRect.width || !linkRect.width) return;
+
+    const styles = window.getComputedStyle(nav);
+    const paddingLeft = parseFloat(styles.paddingLeft) || 0;
+
+    const x =
+      linkRect.left -
+      navRect.left -
+      nav.clientLeft -
+      paddingLeft;
+
+    if (instant) {
+      indicator.style.transition = "none";
+    } else {
+      indicator.style.removeProperty("transition");
+    }
+
+    indicator.style.width = `${linkRect.width}px`;
+    indicator.style.transform = `translate3d(${x}px, 0, 0)`;
+    indicator.style.opacity = "1";
+
+    if (instant) {
+      requestAnimationFrame(() => {
+        indicator.style.removeProperty("transition");
+      });
+    }
+  }
+
+  function setActive(link, instant = false) {
+    if (!link) return;
+
+    activeLink = link;
+
+    links.forEach((item) => {
+      const isActive = item === link;
+
+      item.classList.toggle("active", isActive);
+
+      if (isActive) {
+        item.setAttribute("aria-current", "location");
+      } else {
+        item.removeAttribute("aria-current");
+      }
+    });
+
+    moveIndicator(link, instant);
+  }
+
+  /*
+   * A menüpontok kattintásra azonnal aktívvá válnak.
+   * A natív hivatkozás továbbra is a megfelelő
+   * szekcióhoz görget.
+   */
+  links.forEach((link) => {
+    link.addEventListener("click", () => {
+      setActive(link);
+    });
+  });
+
+  /*
+   * Görgetéskor megkeressük az aktuális szekciót.
+   * requestAnimationFrame csökkenti a felesleges
+   * képkockánkénti számításokat.
+   */
+  function updateFromScroll() {
+    scrollFrame = 0;
+
+    let bestLink = links[0];
+    let bestDistance = Infinity;
+
+    for (const link of links) {
+      const href = link.getAttribute("href");
+
+      if (!href || !href.startsWith("#")) continue;
+
+      const target = document.querySelector(href);
+      if (!target) continue;
+
+      const rect = target.getBoundingClientRect();
+
+      if (rect.top <= 160) {
+        const distance = Math.abs(rect.top - 120);
+
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestLink = link;
+        }
+      }
+    }
+
+    if (bestLink !== activeLink) {
+      setActive(bestLink);
+    } else {
+      moveIndicator(bestLink);
+    }
+  }
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (scrollFrame) return;
+
+      scrollFrame = requestAnimationFrame(updateFromScroll);
+    },
+    { passive: true }
+  );
+
+  /*
+   * Forgatás, ablakméret-változás és betöltés után
+   * újramérjük a menüpontok helyét.
+   */
+  function refreshNavigation() {
+    if (resizeFrame) {
+      cancelAnimationFrame(resizeFrame);
+    }
+
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = 0;
+
+      if (activeLink) {
+        moveIndicator(activeLink, true);
+      } else {
+        const initial =
+          links.find((link) => link.classList.contains("active")) ||
+          links[0];
+
+        setActive(initial, true);
+      }
+    });
+  }
+
+  window.addEventListener("resize", refreshNavigation, {
+    passive: true
+  });
+
+  window.addEventListener("orientationchange", refreshNavigation, {
+    passive: true
+  });
+
+  window.addEventListener("pageshow", refreshNavigation);
+
+  if (typeof mobileQuery.addEventListener === "function") {
+    mobileQuery.addEventListener("change", refreshNavigation);
+  } else if (typeof mobileQuery.addListener === "function") {
+    mobileQuery.addListener(refreshNavigation);
+  }
+
+  /*
+   * Kezdőállapot beállítása animáció nélkül,
+   * hogy betöltéskor ne csússzon át a jelölő
+   * az első menüpontra.
+   */
+  function initializeNavigation() {
+    const initial =
+      links.find((link) => link.classList.contains("active")) ||
+      links[0];
+
+    setActive(initial, true);
+    updateFromScroll();
+  }
+
+  if (document.readyState === "complete") {
+    initializeNavigation();
+  } else {
+    window.addEventListener("load", initializeNavigation, {
+      once: true
+    });
+  }
 })();

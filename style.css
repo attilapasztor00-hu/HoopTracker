@@ -2041,3 +2041,326 @@ html {
        transition: none !important;
    }
 }
+/* ==========================================
+   HOOPTRACKER — IPHONE LIQUID GLASS NAV
+   Csak iOS-es, keskeny, érintéses kijelzőn
+   ========================================== */
+
+@supports (-webkit-touch-callout: none) {
+  @media screen and (max-width: 700px) and (hover: none) {
+    :root {
+      --nav-glass-bg: rgba(22, 29, 45, 0.66);
+      --nav-glass-border: rgba(255, 255, 255, 0.18);
+      --nav-active-glass: rgba(145, 177, 255, 0.16);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 20px;
+    }
+
+    body {
+      width: 100%;
+      min-width: 0;
+      overflow-x: clip;
+      padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    /* Alsó, lebegő üvegmenü */
+    body .main-nav {
+      position: fixed !important;
+      top: auto !important;
+      bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+      left: 12px !important;
+      right: 12px !important;
+
+      width: auto !important;
+      max-width: 420px !important;
+      height: 64px !important;
+      min-height: 0 !important;
+
+      margin: 0 auto !important;
+      padding: 6px !important;
+
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 2px !important;
+
+      box-sizing: border-box !important;
+      isolation: isolate;
+      overflow: hidden !important;
+
+      background: var(--nav-glass-bg) !important;
+      border: 1px solid var(--nav-glass-border) !important;
+      border-radius: 23px !important;
+
+      -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+      backdrop-filter: blur(24px) saturate(180%) !important;
+
+      box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.035) !important;
+
+      z-index: 99999 !important;
+    }
+
+    /* Mozgó Liquid Glass kijelölő */
+    body .main-nav .nav-indicator {
+      position: absolute !important;
+      z-index: 0 !important;
+
+      top: 6px !important;
+      left: 0;
+      width: 0;
+      height: 50px;
+
+      box-sizing: border-box;
+      border: 1px solid rgba(215, 229, 255, 0.27);
+      border-radius: 16px;
+
+      background: linear-gradient(
+        135deg,
+        rgba(190, 211, 255, 0.24),
+        rgba(105, 145, 255, 0.12)
+      );
+
+      -webkit-backdrop-filter: blur(15px) saturate(180%);
+      backdrop-filter: blur(15px) saturate(180%);
+
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.20),
+        0 2px 12px rgba(103, 145, 255, 0.10);
+
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(0, 0, 0);
+      will-change: transform, width, opacity;
+
+      transition:
+        transform 460ms cubic-bezier(0.22, 1, 0.36, 1),
+        width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 180ms ease;
+    }
+
+    /* Hat egyforma szélességű menüpont */
+    body .main-nav .nav-link {
+      position: relative !important;
+      z-index: 1 !important;
+
+      flex: 1 1 0 !important;
+      min-width: 0 !important;
+      width: 0;
+
+      height: 50px !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      padding: 4px 1px !important;
+
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 4px !important;
+
+      border: 1px solid transparent !important;
+      border-radius: 16px !important;
+      background: transparent !important;
+      box-shadow: none !important;
+
+      color: rgba(245, 247, 255, 0.76) !important;
+      font-size: 9px !important;
+      font-weight: 600 !important;
+      line-height: 1.05 !important;
+      letter-spacing: -0.1px !important;
+      text-align: center !important;
+      text-decoration: none !important;
+
+      /* Hosszabb feliratok is a dobozban maradnak */
+      white-space: normal !important;
+      overflow-wrap: anywhere;
+      word-break: normal;
+
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+
+      transition:
+        color 220ms ease,
+        transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+
+    /* Ikonok */
+    body .main-nav .nav-link::before {
+      display: block;
+      flex: 0 0 auto;
+      font-size: 18px;
+      line-height: 1;
+      font-weight: 400;
+      transform: translate3d(0, 0, 0);
+      transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    body .main-nav .nav-link[href="#dashboard"]::before {
+      content: "⌂";
+    }
+
+    body .main-nav .nav-link[href="#myPlayer"]::before {
+      content: "◎";
+    }
+
+    body .main-nav .nav-link[href="#challenges"]::before {
+      content: "◇";
+    }
+
+    body .main-nav .nav-link[href="#records"]::before {
+      content: "▤";
+    }
+
+    body .main-nav .nav-link[href="#gameSection"]::before {
+      content: "◷";
+    }
+
+    body .main-nav .nav-link[href="#workoutSection"]::before {
+      content: "↗";
+    }
+
+    /* Az aktív link hátterét a mozgó üvegjelölő adja */
+    body .main-nav .nav-link.active {
+      color: #fff !important;
+      background: transparent !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+
+    body .main-nav .nav-link.active::before {
+      transform: translate3d(0, -1px, 0) scale(1.06);
+    }
+
+    body .main-nav .nav-link:active {
+      transform: scale(0.94) !important;
+    }
+
+    /* Biztos hely a menü alatt, hogy ne takarja a tartalmat */
+    main {
+      min-width: 0;
+      padding-bottom: 12px;
+    }
+
+    .page-section,
+    .panel,
+    .card,
+    .section-heading,
+    .player-overview,
+    .player-info,
+    .attribute-categories,
+    .challenge-card,
+    .game-entry {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .page-section,
+    .panel,
+    .card,
+    .game-entry,
+    .challenge-card {
+      overflow-wrap: anywhere;
+    }
+
+    .section-heading h2,
+    .panel h2,
+    .card h2,
+    .game-entry h3,
+    .challenge-card h3,
+    .section-description,
+    .challenge-card p,
+    .game-entry p {
+      min-width: 0;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    /* Kis kijelzőn is elférő kártyák */
+    .stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card {
+      min-width: 0;
+    }
+
+    .card h2 {
+      overflow-wrap: anywhere;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Biztosan a dobozban maradó beviteli mezők */
+    #gameForm,
+    #workoutForm,
+    #gameForm label,
+    #workoutForm label,
+    #gameForm input,
+    #gameForm select,
+    #workoutForm input,
+    #workoutForm select,
+    .player-info input,
+    .player-info select,
+    .challenge-toolbar select {
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    #gameForm input,
+    #gameForm select,
+    #workoutForm input,
+    #workoutForm select,
+    .player-info input,
+    .player-info select,
+    .challenge-toolbar select {
+      width: 100%;
+      font-size: 16px;
+    }
+
+    /* Ne legyen nagyítás iPhone-on fókuszáláskor */
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+    }
+
+    /* Keskeny iPhone-kijelző */
+    @media screen and (max-width: 360px) {
+      body .main-nav {
+        left: 7px !important;
+        right: 7px !important;
+        padding: 5px !important;
+      }
+
+      body .main-nav .nav-link {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        font-size: 8px !important;
+      }
+
+      body .main-nav .nav-link::before {
+        font-size: 17px;
+      }
+    }
+
+    /* Animáció kikapcsolása, ha a felhasználó ezt kéri */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto !important;
+      }
+
+      body .main-nav .nav-indicator,
+      body .main-nav .nav-link,
+      body .main-nav .nav-link::before {
+        transition: none !important;
+      }
+    }
+  }
+}
