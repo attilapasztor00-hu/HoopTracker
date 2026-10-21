@@ -1064,9 +1064,18 @@ updateDashboard();
     moveIndicator(link, instant);
   }
 
+ let isScrollingByClick = false;
+
   links.forEach((link) => {
     link.addEventListener("click", () => {
+      isScrollingByClick = true;
       setActive(link);
+
+      // Amikor rákattintunk, megjelöljük az aktívat, 
+      // és egy rövid ideig letiltjuk, hogy a scroll-figyelő bezavarjon
+      setTimeout(() => {
+        isScrollingByClick = false;
+      }, 600); // 600ms alatt simán odagörpel az oldal
     });
   });
 
