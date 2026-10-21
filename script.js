@@ -117,7 +117,7 @@ let playerProfile = JSON.parse(
 let completedChallenges = JSON.parse(
    localStorage.getItem("hoopTrackerCompletedChallenges") || "[]"
 );
-// A régi kihívások megmaradnak.
+// Existing challenge IDs are preserved so saved completion data still works.
 const LEGACY_CHALLENGES = [
    {
        id: "shoot-ft-bronze",
@@ -125,7 +125,7 @@ const LEGACY_CHALLENGES = [
        attribute: "freeThrow",
        title: "Free Throw Consistency",
        difficulty: "Bronze",
-       description: "Dobj be 6 büntetőt 10 kísérletből.",
+       description: "Make 6 free throws out of 10 attempts.",
        reward: 1
    },
    {
@@ -134,7 +134,7 @@ const LEGACY_CHALLENGES = [
        attribute: "midRange",
        title: "Mid-Range Accuracy",
        difficulty: "Bronze",
-       description: "Dobj be 6 középtávoli dobást 10 kísérletből.",
+       description: "Make 6 mid-range shots out of 10 attempts.",
        reward: 1
    },
    {
@@ -143,7 +143,7 @@ const LEGACY_CHALLENGES = [
        attribute: "threePoint",
        title: "Three-Point Starter",
        difficulty: "Bronze",
-       description: "Dobj be 5 triplát 15 kísérletből.",
+       description: "Make 5 three-pointers out of 15 attempts.",
        reward: 1
    },
    {
@@ -152,7 +152,7 @@ const LEGACY_CHALLENGES = [
        attribute: "closeShot",
        title: "Close Shot Control",
        difficulty: "Bronze",
-       description: "Dobj be 8 közeli dobást 10 kísérletből.",
+       description: "Make 8 close-range shots out of 10 attempts.",
        reward: 1
    },
    {
@@ -161,7 +161,7 @@ const LEGACY_CHALLENGES = [
        attribute: "pullUp",
        title: "Pull-Up Challenge",
        difficulty: "Silver",
-       description: "Dobj be 6 megállásból elengedett középtávoli dobást 10-ből.",
+       description: "Make 6 pull-up mid-range shots out of 10 attempts.",
        reward: 1
    },
    {
@@ -170,7 +170,7 @@ const LEGACY_CHALLENGES = [
        attribute: "catchShoot",
        title: "Catch & Shoot",
        difficulty: "Silver",
-       description: "Passzból érkező labdával dobj be 7 dobást 10 kísérletből.",
+       description: "Make 7 catch-and-shoot shots out of 10 attempts.",
        reward: 1
    },
    {
@@ -179,7 +179,7 @@ const LEGACY_CHALLENGES = [
        attribute: "threePoint",
        title: "Gold: Sharpshooter",
        difficulty: "Gold",
-       description: "Dobj be 10 triplát 15 kísérletből, legalább 5 különböző dobóhelyről.",
+       description: "Make 10 three-pointers out of 15 attempts from at least 5 different spots.",
        reward: 2
    },
    {
@@ -188,7 +188,7 @@ const LEGACY_CHALLENGES = [
        attribute: "midRange",
        title: "Gold: Mid-Range Specialist",
        difficulty: "Gold",
-       description: "Dobj be 8 középtávoli dobást 10 kísérletből, legalább 3 különböző helyről.",
+       description: "Make 8 mid-range shots out of 10 attempts from at least 3 different spots.",
        reward: 2
    },
    {
@@ -197,7 +197,7 @@ const LEGACY_CHALLENGES = [
        attribute: "freeThrow",
        title: "Gold: Ice in the Veins",
        difficulty: "Gold",
-       description: "Dobj be egymás után 9 büntetőt 10 kísérletből.",
+       description: "Make 9 free throws in a row out of 10 attempts.",
        reward: 2
    },
    {
@@ -206,7 +206,7 @@ const LEGACY_CHALLENGES = [
        attribute: "ballControl",
        title: "Ball Control Basics",
        difficulty: "Bronze",
-       description: "Végezz 30 másodperc folyamatos labdavezetést labdavesztés nélkül.",
+       description: "Dribble continuously for 30 seconds without losing control of the ball.",
        reward: 1
    },
    {
@@ -215,7 +215,7 @@ const LEGACY_CHALLENGES = [
        attribute: "weakHand",
        title: "Weak Hand",
        difficulty: "Bronze",
-       description: "Végezz 30 szabályos gyenge kezes leütést.",
+       description: "Complete 30 controlled dribbles with your weaker hand.",
        reward: 1
    },
    {
@@ -224,7 +224,7 @@ const LEGACY_CHALLENGES = [
        attribute: "crossover",
        title: "Crossover Control",
        difficulty: "Bronze",
-       description: "Végezz 30 szabályos crossover leütést.",
+       description: "Complete 30 controlled crossover dribbles.",
        reward: 1
    },
    {
@@ -233,7 +233,7 @@ const LEGACY_CHALLENGES = [
        attribute: "betweenLegs",
        title: "Between-the-Legs",
        difficulty: "Silver",
-       description: "Végezz 20 egymást követő, hibátlan láb közötti labdavezetést.",
+       description: "Complete 20 consecutive clean between-the-legs dribbles.",
        reward: 1
    },
    {
@@ -242,7 +242,7 @@ const LEGACY_CHALLENGES = [
        attribute: "behindBack",
        title: "Behind-the-Back",
        difficulty: "Silver",
-       description: "Végezz 15 szabályos hát mögötti labdavezetést.",
+       description: "Complete 15 controlled behind-the-back dribbles.",
        reward: 1
    },
    {
@@ -251,7 +251,7 @@ const LEGACY_CHALLENGES = [
        attribute: "comboMoves",
        title: "Gold: Combo Creator",
        difficulty: "Gold",
-       description: "Végezz 5 különböző cselekombinációt egymás után labdavesztés nélkül, majd fejezd be dobással.",
+       description: "Perform 5 different dribble combinations in a row without losing the ball, then finish with a shot.",
        reward: 2
    },
    {
@@ -260,7 +260,7 @@ const LEGACY_CHALLENGES = [
        attribute: "weakHand",
        title: "Gold: Weak-Hand Master",
        difficulty: "Gold",
-       description: "Vezesd a labdát gyengébb kézzel 60 másodpercig, majd hajts végre 10 sikeres gyenge kezes befejezést.",
+       description: "Dribble with your weaker hand for 60 seconds, then make 10 successful weak-hand finishes.",
        reward: 2
    },
    {
@@ -269,7 +269,7 @@ const LEGACY_CHALLENGES = [
        attribute: "rightLayup",
        title: "Right-Hand Finishing",
        difficulty: "Bronze",
-       description: "Dobj be 8 jobbkezes ziccert 10 kísérletből.",
+       description: "Make 8 right-handed layups out of 10 attempts.",
        reward: 1
    },
    {
@@ -278,7 +278,7 @@ const LEGACY_CHALLENGES = [
        attribute: "leftLayup",
        title: "Left-Hand Finishing",
        difficulty: "Bronze",
-       description: "Dobj be 7 balkezes ziccert 10 kísérletből.",
+       description: "Make 7 left-handed layups out of 10 attempts.",
        reward: 1
    },
    {
@@ -287,7 +287,7 @@ const LEGACY_CHALLENGES = [
        attribute: "floater",
        title: "Floater Touch",
        difficulty: "Silver",
-       description: "Dobj be 6 floatert 10 kísérletből, mindkét oldalról.",
+       description: "Make 6 floaters out of 10 attempts from both sides.",
        reward: 1
    },
    {
@@ -296,7 +296,7 @@ const LEGACY_CHALLENGES = [
        attribute: "drivingLayup",
        title: "Gold: Finishing Package",
        difficulty: "Gold",
-       description: "Dobj be 8 ziccert 10 kísérletből jobbkezes, balkezes és reverse befejezésekkel.",
+       description: "Make 8 layups out of 10 attempts using right-handed, left-handed, and reverse finishes.",
        reward: 2
    },
    {
@@ -305,7 +305,7 @@ const LEGACY_CHALLENGES = [
        attribute: "floater",
        title: "Gold: Floater Specialist",
        difficulty: "Gold",
-       description: "Dobj be 8 floatert 10 kísérletből a pálya mindkét oldaláról.",
+       description: "Make 8 floaters out of 10 attempts from both sides of the court.",
        reward: 2
    },
    {
@@ -314,7 +314,7 @@ const LEGACY_CHALLENGES = [
        attribute: "passAccuracy",
        title: "Passing Accuracy",
        difficulty: "Bronze",
-       description: "Találj el egy kijelölt célterületet 8 alkalommal 10 passzból.",
+       description: "Hit a designated target area with 8 out of 10 passes.",
        reward: 1
    },
    {
@@ -323,7 +323,7 @@ const LEGACY_CHALLENGES = [
        attribute: "courtVision",
        title: "Court Vision",
        difficulty: "Silver",
-       description: "Edzőpartnerrel végezz 10 jó döntést igénylő passzgyakorlatot.",
+       description: "Complete 10 passing drills with a training partner that require good decisions.",
        reward: 1
    },
    {
@@ -332,7 +332,7 @@ const LEGACY_CHALLENGES = [
        attribute: "decisionMaking",
        title: "Gold: Floor General",
        difficulty: "Gold",
-       description: "Edzőpartnerrel hajts végre 10 játékhelyzetet, és legalább 8 alkalommal válaszd a jó passzt vagy befejezést.",
+       description: "Complete 10 game-situation drills with a training partner, choosing the correct pass or finish at least 8 times.",
        reward: 2
    },
    {
@@ -341,7 +341,7 @@ const LEGACY_CHALLENGES = [
        attribute: "agility",
        title: "Agility Test",
        difficulty: "Bronze",
-       description: "Rögzítsd egy szabályos ingafutás idejét, majd ismételd meg azonos pályán.",
+       description: "Record your time in a proper shuttle run, then repeat it on the same course.",
        reward: 1
    },
    {
@@ -350,7 +350,7 @@ const LEGACY_CHALLENGES = [
        attribute: "verticalJump",
        title: "Vertical Jump Baseline",
        difficulty: "Bronze",
-       description: "Mérd meg három szabályos ugrásodat, és rögzítsd a legjobb eredményt.",
+       description: "Measure three proper jumps and record your best result.",
        reward: 1
    },
    {
@@ -359,7 +359,7 @@ const LEGACY_CHALLENGES = [
        attribute: "stamina",
        title: "Gold: Fourth-Quarter Engine",
        difficulty: "Gold",
-       description: "Végezz 4 intenzív, 2 perces kondicionáló kört, köztük 1 perc pihenővel. Fájdalom esetén állj meg.",
+       description: "Complete 4 intense 2-minute conditioning rounds with 1 minute of rest between rounds. Stop if you feel pain.",
        reward: 2
    },
    {
@@ -368,7 +368,7 @@ const LEGACY_CHALLENGES = [
        attribute: "defensiveFootwork",
        title: "Defensive Footwork",
        difficulty: "Bronze",
-       description: "Végezz 3 × 20 másodperc oldalazó védekező lábmunkát.",
+       description: "Complete 3 × 20 seconds of lateral defensive footwork.",
        reward: 1
    },
    {
@@ -377,7 +377,7 @@ const LEGACY_CHALLENGES = [
        attribute: "rebounding",
        title: "Rebound Positioning",
        difficulty: "Silver",
-       description: "Edzőpartnerrel hajts végre 8 szabályos lepattanóhelyezkedési ismétlést 10-ből.",
+       description: "Complete 8 proper rebounding-positioning repetitions out of 10 with a training partner.",
        reward: 1
    },
    {
@@ -386,11 +386,11 @@ const LEGACY_CHALLENGES = [
        attribute: "perimeterDefense",
        title: "Gold: Lockdown Defender",
        difficulty: "Gold",
-       description: "Edzőpartnerrel végezz 10 egy-egy elleni védekező ismétlést, és legalább 7-szer maradj a támadó előtt szabálytalanság nélkül.",
+       description: "Complete 10 one-on-one defensive repetitions with a training partner, staying in front of the attacker without fouling at least 7 times.",
        reward: 2
    }
 ];
-// Minden képességhez külön, fokozatosan feloldható kihívások készülnek.
+// Generate progressive challenges for every attribute.
 const GENERATED_CHALLENGES = allAttributes.flatMap(attribute => {
    const tiers = [
        { difficulty: "Bronze", count: 8, reward: 1 },
@@ -409,49 +409,38 @@ const GENERATED_CHALLENGES = allAttributes.flatMap(attribute => {
            switch (attribute.group) {
                case "shooting":
                    description =
-                       `Gyakorolj ${attribute.name} dobásokat. ` +
-                       `Végezz ${repetitions} dobáskísérletet, ` +
-                       `és rögzítsd a sikeres dobásaid számát.`;
+                       `Practice ${attribute.name} shots. Take ${repetitions} attempts ` +
+                       `and record how many you make.`;
                    break;
                case "handling":
                    description =
-                       `Fejleszd a ${attribute.name} képességedet ` +
-                       `${seconds} másodperc célzott gyakorlással. ` +
-                       `Törekedj a szabályos labdavezetésre.`;
+                       `Improve your ${attribute.name}. Practice with focus for ` +
+                       `${seconds} seconds, maintaining controlled dribbling.`;
                    break;
                case "finishing":
                    description =
-                       `Gyakorold a ${attribute.name} befejezést ` +
-                       `${repetitions} alkalommal. ` +
-                       `Figyelj a helyes technikára, és ne erőltesd ` +
-                       `a fájdalmas mozdulatokat.`;
+                       `Practice ${attribute.name} finishes ${repetitions} times. ` +
+                       `Focus on proper technique and do not force painful movements.`;
                    break;
                case "playmaking":
                    description =
-                       `Fejleszd a ${attribute.name} képességedet. ` +
-                       `Végezz ${repetitions} passz- vagy ` +
-                       `játékhelyzet-gyakorlatot, és figyelj ` +
-                       `a pontos végrehajtásra.`;
+                       `Improve your ${attribute.name}. Complete ${repetitions} passing ` +
+                       `or game-situation drills with accurate execution.`;
                    break;
                case "athleticism":
                    description =
-                       `Gyakorold a ${attribute.name} képességet ` +
-                       `kontrollált, szabályos mozgással. ` +
-                       `Végezz ${Math.min(i + 2, 8)} minőségi ismétlést, ` +
-                       `közöttük elegendő pihenővel. ` +
-                       `Fájdalom esetén állj meg.`;
+                       `Practice ${attribute.name} with controlled, proper movement. ` +
+                       `Complete ${Math.min(i + 2, 8)} quality repetitions with enough ` +
+                       `rest between them. Stop if you feel pain.`;
                    break;
                case "defense":
                    description =
-                       `Fejleszd a ${attribute.name} képességedet. ` +
-                       `Végezz ${repetitions} szabályos védekező ` +
-                       `gyakorlatot, és figyelj a lábmunkára ` +
-                       `és a kontrollra.`;
+                       `Improve your ${attribute.name}. Complete ${repetitions} controlled ` +
+                       `defensive repetitions, focusing on footwork and body control.`;
                    break;
                default:
                    description =
-                       `Gyakorold a ${attribute.name} képességet ` +
-                       `${repetitions} szabályos ismétléssel.`;
+                       `Practice ${attribute.name} with ${repetitions} controlled repetitions.`;
            }
            challenges.push({
                id: `generated-${attribute.id}-${progression}`,
@@ -498,7 +487,7 @@ function renderAttributes() {
        if (!container) return;
        container.innerHTML = `
 <h3>${group.name}</h3>
-<p>Fejleszd az értékeidet edzéssel és kihívásokkal.</p>
+<p>Improve your ratings through training and challenges.</p>
        `;
        group.attributes.forEach(([id, name]) => {
            const value = attributes[id];
@@ -535,10 +524,10 @@ function updatePlayerRating() {
    const improved = Object.values(attributes).filter(value => value > 60).length;
    if (progressElement) {
        progressElement.textContent =
-           `${improved} / ${allAttributes.length} képesség fejlesztve az alapérték fölé`;
+           `${improved} / ${allAttributes.length} attributes improved above their base rating`;
    }
 }
-// A generált kihívásoknál csak az adott képesség következő feladata nyílik meg.
+// Each generated challenge unlocks after the previous challenges for that attribute are completed.
 function isChallengeUnlocked(challenge) {
    if (challenge.progression === undefined) {
        return true;
@@ -566,13 +555,12 @@ function renderChallenges() {
            challenge.category === categoryFilter;
        const difficultyMatches =
            difficultyFilter === "all" ||
-           challenge.difficulty.toLowerCase() ===
-               difficultyFilter.toLowerCase();
+           challenge.difficulty.toLowerCase() === difficultyFilter.toLowerCase();
        return categoryMatches && difficultyMatches;
    });
    if (filteredChallenges.length === 0) {
        container.innerHTML =
-           "<p>Nincs elérhető kihívás ezekkel a szűrőkkel. Próbálj másik szintet vagy kategóriát.</p>";
+           "<p>No challenges match these filters. Try another difficulty or category.</p>";
        return;
    }
    filteredChallenges.forEach(challenge => {
@@ -596,18 +584,16 @@ function renderChallenges() {
        difficultyTag.textContent = challenge.difficulty;
        const reward = document.createElement("span");
        reward.className = "challenge-reward";
-       reward.textContent = `+${challenge.reward} képességpont`;
+       reward.textContent = `+${challenge.reward} Attribute Points`;
        meta.append(categoryTag, difficultyTag, reward);
        const button = document.createElement("button");
        button.type = "button";
-       button.textContent = completed
-           ? "Teljesítve"
-           : "Kihívás teljesítése";
+       button.textContent = completed ? "Completed" : "Complete Challenge";
        button.disabled = completed;
        button.addEventListener("click", () => {
            if (completedChallenges.includes(challenge.id)) return;
            const confirmed = confirm(
-               `Valóban teljesítetted ezt a kihívást?\n\n${challenge.title}`
+               `Have you completed this challenge?\n\n${challenge.title}`
            );
            if (!confirmed) return;
            completedChallenges.push(challenge.id);
@@ -630,10 +616,10 @@ function saveWorkouts() {
    localStorage.setItem("hoopTrackerWorkouts", JSON.stringify(workouts));
 }
 function formatDate(dateString) {
-   if (!dateString) return "Nincs dátum";
+   if (!dateString) return "No date";
    const date = new Date(dateString + "T12:00:00");
    if (Number.isNaN(date.getTime())) return dateString;
-   return date.toLocaleDateString("hu-HU", {
+   return date.toLocaleDateString("en-GB", {
        year: "numeric",
        month: "short",
        day: "numeric"
@@ -643,7 +629,7 @@ function renderGames() {
    if (!gameList) return;
    gameList.innerHTML = "";
    if (games.length === 0) {
-       gameList.innerHTML = "<p>Még nincs rögzített mérkőzés.</p>";
+       gameList.innerHTML = "<p>No games recorded yet.</p>";
        return;
    }
    [...games]
@@ -658,16 +644,16 @@ function renderGames() {
            date.textContent = formatDate(game.date);
            const stats = document.createElement("p");
            stats.textContent =
-               `${game.threeMade}/${game.threeAttempted} tripla · ` +
-               `${game.rebounds} lepattanó · ${game.assists} gólpassz`;
+               `${game.threeMade}/${game.threeAttempted} 3PT · ` +
+               `${game.rebounds} REB · ${game.assists} AST`;
            details.append(opponent, date, stats);
            const score = document.createElement("strong");
            score.textContent = `${game.points} PTS`;
            const deleteButton = document.createElement("button");
            deleteButton.type = "button";
-           deleteButton.textContent = "Törlés";
+           deleteButton.textContent = "Delete";
            deleteButton.addEventListener("click", () => {
-               if (!confirm("Biztosan törlöd ezt a mérkőzést?")) return;
+               if (!confirm("Are you sure you want to delete this game?")) return;
                games = games.filter(entry => entry.id !== game.id);
                saveGames();
                updateDashboard();
@@ -676,11 +662,19 @@ function renderGames() {
            gameList.appendChild(item);
        });
 }
+// Keep the stored Hungarian values compatible with existing workout records.
+const WORKOUT_TYPE_LABELS = {
+   Doboedzes: "Shooting Workout",
+   Labdakezeles: "Ball Handling",
+   Eronlet: "Conditioning",
+   Ugroedzes: "Jump Training",
+   Csapatedzes: "Team Practice"
+};
 function renderWorkouts() {
    if (!workoutList) return;
    workoutList.innerHTML = "";
    if (workouts.length === 0) {
-       workoutList.innerHTML = "<p>Még nincs rögzített edzés.</p>";
+       workoutList.innerHTML = "<p>No workouts logged yet.</p>";
        return;
    }
    [...workouts]
@@ -690,18 +684,18 @@ function renderWorkouts() {
            item.className = "workout-item";
            const details = document.createElement("div");
            const title = document.createElement("strong");
-           title.textContent = workout.type;
+           title.textContent = WORKOUT_TYPE_LABELS[workout.type] || workout.type;
            const date = document.createElement("p");
            date.textContent =
-               `${formatDate(workout.date)} · ${workout.duration} perc`;
+               `${formatDate(workout.date)} · ${workout.duration} min`;
            const note = document.createElement("p");
-           note.textContent = workout.note || "Nincs megjegyzés.";
+           note.textContent = workout.note || "No notes added.";
            details.append(title, date, note);
            const deleteButton = document.createElement("button");
            deleteButton.type = "button";
-           deleteButton.textContent = "Törlés";
+           deleteButton.textContent = "Delete";
            deleteButton.addEventListener("click", () => {
-               if (!confirm("Biztosan törlöd ezt az edzést?")) return;
+               if (!confirm("Are you sure you want to delete this workout?")) return;
                workouts = workouts.filter(entry => entry.id !== workout.id);
                saveWorkouts();
                renderWorkouts();
@@ -713,19 +707,24 @@ function renderWorkouts() {
 function updateDashboard() {
    const totalGames = games.length;
    const totalPoints = games.reduce(
-       (sum, game) => sum + Number(game.points || 0), 0
+       (sum, game) => sum + Number(game.points || 0),
+       0
    );
    const totalThreesMade = games.reduce(
-       (sum, game) => sum + Number(game.threeMade || 0), 0
+       (sum, game) => sum + Number(game.threeMade || 0),
+       0
    );
    const totalThreesAttempted = games.reduce(
-       (sum, game) => sum + Number(game.threeAttempted || 0), 0
+       (sum, game) => sum + Number(game.threeAttempted || 0),
+       0
    );
    const totalRebounds = games.reduce(
-       (sum, game) => sum + Number(game.rebounds || 0), 0
+       (sum, game) => sum + Number(game.rebounds || 0),
+       0
    );
    const totalAssists = games.reduce(
-       (sum, game) => sum + Number(game.assists || 0), 0
+       (sum, game) => sum + Number(game.assists || 0),
+       0
    );
    if ($("pointsAverage")) {
        $("pointsAverage").textContent = totalGames
@@ -755,13 +754,14 @@ function updateDashboard() {
    const average = totalGames ? totalPoints / totalGames : 0;
    const goalProgress = Math.min(100, average / goal * 100);
    if ($("goalProgress")) {
-       $("goalProgress").textContent = `${average.toFixed(1)} / ${goal}`;
+       $("goalProgress").textContent =
+           `Scoring average: ${average.toFixed(1)} / ${goal} PPG`;
    }
    if ($("goalBar")) {
        $("goalBar").style.width = `${goalProgress}%`;
    }
    if ($("goalPercentage")) {
-       $("goalPercentage").textContent = `${Math.round(goalProgress)}%`;
+       $("goalPercentage").textContent = `${Math.round(goalProgress)}% of goal`;
    }
    const today = new Date();
    today.setHours(0, 0, 0, 0);
@@ -772,24 +772,29 @@ function updateDashboard() {
        return date >= weekStart && date <= today;
    });
    const weeklyPoints = weeklyGames.reduce(
-       (sum, game) => sum + Number(game.points || 0), 0
+       (sum, game) => sum + Number(game.points || 0),
+       0
    );
    const weeklyThrees = weeklyGames.reduce(
-       (sum, game) => sum + Number(game.threeMade || 0), 0
+       (sum, game) => sum + Number(game.threeMade || 0),
+       0
    );
    if ($("weeklyGames")) {
-       $("weeklyGames").textContent = weeklyGames.length;
+       $("weeklyGames").textContent = `Games this week: ${weeklyGames.length}`;
    }
    if ($("weeklyPoints")) {
-       $("weeklyPoints").textContent = weeklyPoints;
+       $("weeklyPoints").textContent = `Points scored this week: ${weeklyPoints}`;
    }
    if ($("weeklyAverage")) {
-       $("weeklyAverage").textContent = weeklyGames.length
-           ? (weeklyPoints / weeklyGames.length).toFixed(1)
-           : "0.0";
+       $("weeklyAverage").textContent =
+           `Weekly scoring average: ${
+               weeklyGames.length
+                   ? (weeklyPoints / weeklyGames.length).toFixed(1)
+                   : "0.0"
+           } PPG`;
    }
    if ($("weeklyThrees")) {
-       $("weeklyThrees").textContent = weeklyThrees;
+       $("weeklyThrees").textContent = `3-pointers made this week: ${weeklyThrees}`;
    }
    renderGames();
    renderRecords();
@@ -800,7 +805,7 @@ if (form) {
        const threeMade = Number($("threeMade").value);
        const threeAttempted = Number($("threeAttempted").value);
        if (threeMade > threeAttempted) {
-           alert("A bedobott triplák száma nem lehet nagyobb a kísérletek számánál.");
+           alert("Made three-pointers cannot exceed attempted three-pointers.");
            return;
        }
        const game = {
@@ -876,8 +881,12 @@ function getLocalDateString() {
    return `${year}-${month}-${day}`;
 }
 const todayString = getLocalDateString();
-if ($("gameDate")) $("gameDate").value = todayString;
-if ($("workoutDate")) $("workoutDate").value = todayString;
+if ($("gameDate")) {
+   $("gameDate").value = todayString;
+}
+if ($("workoutDate")) {
+   $("workoutDate").value = todayString;
+}
 function renderRecords() {
    const currentYear = new Date().getFullYear();
    const recordTypes = [
@@ -887,7 +896,7 @@ function renderRecords() {
            detailsId: "recordPointsDetails",
            seasonValueId: "seasonRecordPoints",
            seasonDetailsId: "seasonRecordPointsDetails",
-           label: "pont"
+           label: "points"
        },
        {
            key: "rebounds",
@@ -895,7 +904,7 @@ function renderRecords() {
            detailsId: "recordReboundsDetails",
            seasonValueId: "seasonRecordRebounds",
            seasonDetailsId: "seasonRecordReboundsDetails",
-           label: "lepattanó"
+           label: "rebounds"
        },
        {
            key: "assists",
@@ -903,7 +912,7 @@ function renderRecords() {
            detailsId: "recordAssistsDetails",
            seasonValueId: "seasonRecordAssists",
            seasonDetailsId: "seasonRecordAssistsDetails",
-           label: "gólpassz"
+           label: "assists"
        },
        {
            key: "threeMade",
@@ -911,7 +920,7 @@ function renderRecords() {
            detailsId: "recordThreesDetails",
            seasonValueId: "seasonRecordThrees",
            seasonDetailsId: "seasonRecordThreesDetails",
-           label: "bedobott tripla"
+           label: "3-pointers made"
        }
    ];
    function findRecord(list, key) {
@@ -928,12 +937,12 @@ function renderRecords() {
        if (!valueElement || !detailsElement) return;
        if (!game) {
            valueElement.textContent = "0";
-           detailsElement.textContent = "Még nincs rögzített meccs.";
+           detailsElement.textContent = "No games recorded yet.";
            return;
        }
        valueElement.textContent = Number(game[key] || 0);
        detailsElement.textContent =
-           `${game.opponent || "Ismeretlen ellenfél"} · ` +
+           `${game.opponent || "Unknown opponent"} · ` +
            `${formatDate(game.date)} · ${label}`;
    }
    const seasonGames = games.filter(game => {
@@ -979,3 +988,92 @@ renderAttributes();
 renderChallenges();
 renderWorkouts();
 updateDashboard();
+/* HOOPTRACKER — LIQUID GLASS NAVIGATION */
+(() => {
+   const nav = document.querySelector(".main-nav");
+   if (!nav) return;
+   const links = [...nav.querySelectorAll(".nav-link")];
+   const indicator = nav.querySelector(".nav-indicator");
+   if (!links.length || !indicator) return;
+   let activeLink = null;
+   let animationFrame = null;
+   function moveIndicator(link, animate = true) {
+       if (!link) return;
+       const navRect = nav.getBoundingClientRect();
+       const linkRect = link.getBoundingClientRect();
+       if (!navRect.width || !linkRect.width) return;
+       indicator.style.transition = animate
+           ? ""
+           : "none";
+       indicator.style.width = `${linkRect.width}px`;
+       indicator.style.transform =
+           `translateX(${linkRect.left - navRect.left - nav.clientLeft}px)`;
+       indicator.style.opacity = "1";
+       if (!animate) {
+           requestAnimationFrame(() => {
+               indicator.style.transition = "";
+           });
+       }
+       activeLink = link;
+   }
+   function setActive(link, animate = true) {
+       if (!link) return;
+       links.forEach(item => {
+           const active = item === link;
+           item.classList.toggle("active", active);
+           if (active) {
+               item.setAttribute("aria-current", "location");
+           } else {
+               item.removeAttribute("aria-current");
+           }
+       });
+       moveIndicator(link, animate);
+   }
+   links.forEach(link => {
+       link.addEventListener("click", () => {
+           setActive(link);
+       });
+   });
+   function updateFromScroll() {
+       animationFrame = null;
+       let bestLink = links[0];
+       let bestDistance = Infinity;
+       for (const link of links) {
+           const target = document.querySelector(
+               link.getAttribute("href")
+           );
+           if (!target) continue;
+           const distance = Math.abs(
+               target.getBoundingClientRect().top - 120
+           );
+           if (target.getBoundingClientRect().top <= 160 &&
+               distance < bestDistance) {
+               bestDistance = distance;
+               bestLink = link;
+           }
+       }
+       if (bestLink !== activeLink) {
+           setActive(bestLink);
+       } else {
+           moveIndicator(activeLink);
+       }
+   }
+   window.addEventListener("scroll", () => {
+       if (animationFrame !== null) return;
+       animationFrame = requestAnimationFrame(updateFromScroll);
+   }, { passive: true });
+   window.addEventListener("resize", () => {
+       moveIndicator(activeLink, false);
+   });
+   window.addEventListener("load", () => {
+       const initial =
+           links.find(link => link.classList.contains("active")) ||
+           links[0];
+       setActive(initial, false);
+       updateFromScroll();
+   });
+   const initial =
+       links.find(link => link.classList.contains("active")) ||
+       links[0];
+   setActive(initial, false);
+})();

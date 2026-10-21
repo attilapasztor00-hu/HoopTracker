@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080d18">
-<meta name="description" content="HoopTracker – személyes kosárlabda-statisztikák, kihívások és fejlődéskövetés.">
+<meta name="description" content="HoopTracker — Personal basketball stats, challenges, and player development tracking.">
 <title>HoopTracker</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -12,21 +12,21 @@
 <header class="app-header">
 <div>
 <h1>HoopTracker<span>.</span></h1>
-<p>A saját fejlődésed. Minden adat számít.</p>
+<p>Your progress. Every stat matters.</p>
 </div>
 <div class="header-status">
 <span class="status-dot"></span>
-
-            PLAYER DEVELOPMENT
+       PLAYER DEVELOPMENT
 </div>
 </header>
-<nav class="main-nav" aria-label="Fő navigáció">
+<nav class="main-nav" aria-label="Main navigation">
+<span class="nav-indicator" aria-hidden="true"></span>
 <a class="nav-link active" href="#dashboard">Dashboard</a>
 <a class="nav-link" href="#myPlayer">My Player</a>
 <a class="nav-link" href="#challenges">Challenges</a>
 <a class="nav-link" href="#records">Records</a>
-<a class="nav-link" href="#gameSection">Meccsek</a>
-<a class="nav-link" href="#workoutSection">Edzésnapló</a>
+<a class="nav-link" href="#gameSection">Games</a>
+<a class="nav-link" href="#workoutSection">Workout Log</a>
 </nav>
 <main>
 <!-- DASHBOARD -->
@@ -35,49 +35,49 @@
 <div>
 <p class="eyebrow">OVERVIEW</p>
 <h2>Dashboard</h2>
-<p class="section-description">A teljesítményed egy helyen.</p>
+<p class="section-description">Your performance at a glance.</p>
 </div>
 </div>
 <section class="stats">
 <div class="card">
-<p>Pontátlag</p>
+<p>Points per Game</p>
 <h2 id="pointsAverage">0.0</h2>
-<span>Pont / meccs</span>
+<span>Points / game</span>
 </div>
 <div class="card">
-<p>Tripla</p>
+<p>3-Point Percentage</p>
 <h2 id="threePointPercentage">0%</h2>
-<span>Bedobott / kísérlet</span>
+<span>Made / attempted</span>
 </div>
 <div class="card">
-<p>Lepattanóátlag</p>
+<p>Rebounds per Game</p>
 <h2 id="reboundsAverage">0.0</h2>
-<span>Lepattanó / meccs</span>
+<span>Rebounds / game</span>
 </div>
 <div class="card">
-<p>Gólpasszátlag</p>
+<p>Assists per Game</p>
 <h2 id="assistsAverage">0.0</h2>
-<span>Gólpassz / meccs</span>
+<span>Assists / game</span>
 </div>
 </section>
 <section class="panel">
 <p class="eyebrow">SEASON TARGET</p>
-<h2>Szezoncélok</h2>
-<label for="pointsGoal">Célzott pontátlag</label>
+<h2>Season Goals</h2>
+<label for="pointsGoal">Target Points per Game</label>
 <input id="pointsGoal" type="number" min="1" value="30">
-<p id="goalProgress">Pontátlagcél: 0.0 / 30 pont</p>
+<p id="goalProgress">Points per game target: 0.0 / 30 points</p>
 <div class="progress-bar">
 <div id="goalBar" class="progress-fill"></div>
 </div>
-<p id="goalPercentage">0% a célból</p>
+<p id="goalPercentage">0% of target</p>
 </section>
 <section class="panel">
 <p class="eyebrow">THIS WEEK</p>
-<h2>Heti statisztikák</h2>
-<p id="weeklyGames">Meccsek ezen a héten: 0</p>
-<p id="weeklyPoints">Dobott pontok ezen a héten: 0</p>
-<p id="weeklyAverage">Heti pontátlag: 0.0</p>
-<p id="weeklyThrees">Heti triplaszázalék: 0%</p>
+<h2>Weekly Stats</h2>
+<p id="weeklyGames">Games this week: 0</p>
+<p id="weeklyPoints">Points scored this week: 0</p>
+<p id="weeklyAverage">Weekly scoring average: 0.0</p>
+<p id="weeklyThrees">Weekly 3-point percentage: 0%</p>
 </section>
 </section>
 <!-- MY PLAYER -->
@@ -87,8 +87,7 @@
 <p class="eyebrow">PLAYER PROFILE</p>
 <h2>My Player</h2>
 <p class="section-description">
-
-                        Fejleszd a képességeidet 60-ról 99-es értékelésig.
+                   Upgrade your skills from a 60 to a 99 rating.
 </p>
 </div>
 </div>
@@ -99,57 +98,53 @@
 <p id="playerTier" class="player-tier">ROOKIE</p>
 </div>
 <div class="player-info">
-<label for="playerName">Játékos neve</label>
+<label for="playerName">Player Name</label>
 <input
-
-                        id="playerName"
-
-                        type="text"
-
-                        maxlength="40"
-
-                        placeholder="Írd be a neved"
+                   id="playerName"
+                   type="text"
+                   maxlength="40"
+                   placeholder="Enter your name"
 >
-<label for="playerPosition">Poszt</label>
+<label for="playerPosition">Position</label>
 <select id="playerPosition">
-<option value="PG">PG — Irányító</option>
-<option value="SG">SG — Dobóhátvéd</option>
-<option value="SF">SF — Kiscsatár</option>
-<option value="PF">PF — Erőcsatár</option>
+<option value="PG">PG — Point Guard</option>
+<option value="SG">SG — Shooting Guard</option>
+<option value="SF">SF — Small Forward</option>
+<option value="PF">PF — Power Forward</option>
 <option value="C">C — Center</option>
 </select>
-<p id="playerProgressText">0 / 44 attribútum fejlesztve</p>
+<p id="playerProgressText">0 / 44 attributes upgraded</p>
 </div>
 </section>
 <div id="attributeCategories" class="attribute-categories">
 <section class="panel">
 <h3>Shooting</h3>
-<p>A dobásaid pontossága és sokoldalúsága.</p>
+<p>Shooting accuracy and versatility.</p>
 <div id="attributes-shooting"></div>
 </section>
 <section class="panel">
 <h3>Ball Handling</h3>
-<p>Labdabiztonság, cselezés és labdavezetési sebesség.</p>
+<p>Ball security, dribbling, and handling speed.</p>
 <div id="attributes-handling"></div>
 </section>
 <section class="panel">
 <h3>Finishing</h3>
-<p>Befejezések a gyűrű közelében és a levegőben.</p>
+<p>Finishing around the rim and in the air.</p>
 <div id="attributes-finishing"></div>
 </section>
 <section class="panel">
 <h3>Playmaking</h3>
-<p>Passzok, pályalátás és döntéshozatal.</p>
+<p>Passing, court vision, and decision-making.</p>
 <div id="attributes-playmaking"></div>
 </section>
 <section class="panel">
 <h3>Athleticism</h3>
-<p>Gyorsaság, ugrás, erőnlét és koordináció.</p>
+<p>Speed, jumping, stamina, and coordination.</p>
 <div id="attributes-athleticism"></div>
 </section>
 <section class="panel">
 <h3>Defense</h3>
-<p>Védekezés, labdaszerzés és lepattanózás.</p>
+<p>Defense, steals, and rebounding.</p>
 <div id="attributes-defense"></div>
 </section>
 </div>
@@ -161,38 +156,31 @@
 <p class="eyebrow">PROVE YOUR SKILLS</p>
 <h2>Challenges</h2>
 <p class="section-description">
-
-                        Teljesíts mérhető feladatokat az attribútumaid fejlesztéséhez.
+                   Complete measurable challenges to upgrade your attributes.
 </p>
 </div>
 </div>
 <section class="panel challenges-panel">
 <button
-
-                    type="button"
-
-                    id="toggleChallenges"
-
-                    class="challenge-toggle"
-
-                    aria-expanded="false"
-
-                    aria-controls="challengeContent"
+               type="button"
+               id="toggleChallenges"
+               class="challenge-toggle"
+               aria-expanded="false"
+               aria-controls="challengeContent"
 >
 <span>
 <strong>Challenges</strong>
 <span class="challenge-toggle-subtitle">
-
-                            Kihívások és képességfejlesztés
+                       Skill challenges and player development
 </span>
 </span>
 <span id="challengeToggleIcon" class="challenge-toggle-icon">+</span>
 </button>
 <div id="challengeContent" hidden>
 <div class="challenge-toolbar">
-<label for="challengeCategory">Kategória</label>
+<label for="challengeCategory">Category</label>
 <select id="challengeCategory">
-<option value="all">Minden kategória</option>
+<option value="all">All Categories</option>
 <option value="shooting">Shooting</option>
 <option value="handling">Ball Handling</option>
 <option value="finishing">Finishing</option>
@@ -200,9 +188,9 @@
 <option value="athleticism">Athleticism</option>
 <option value="defense">Defense</option>
 </select>
-<label for="challengeDifficulty">Nehézség</label>
+<label for="challengeDifficulty">Difficulty</label>
 <select id="challengeDifficulty">
-<option value="all">Minden nehézség</option>
+<option value="all">All Difficulties</option>
 <option value="Bronze">Bronze</option>
 <option value="Silver">Silver</option>
 <option value="Gold">Gold</option>
@@ -210,7 +198,7 @@
 </select>
 </div>
 <div id="challengeList" aria-live="polite">
-<p>A kihívások betöltése folyamatban.</p>
+<p>Loading challenges...</p>
 </div>
 </div>
 </section>
@@ -219,53 +207,53 @@
 <section id="records" class="page-section">
 <section class="panel">
 <p class="eyebrow">PERSONAL BESTS</p>
-<h2>Összesített rekordok</h2>
+<h2>All-Time Records</h2>
 <div class="stats">
 <div class="card">
-<p>Legtöbb pont egy meccsen</p>
+<p>Most Points in a Game</p>
 <h2 id="recordPoints">0</h2>
-<span id="recordPointsDetails">Még nincs rögzített meccs.</span>
+<span id="recordPointsDetails">No games recorded yet.</span>
 </div>
 <div class="card">
-<p>Legtöbb lepattanó egy meccsen</p>
+<p>Most Rebounds in a Game</p>
 <h2 id="recordRebounds">0</h2>
-<span id="recordReboundsDetails">Még nincs rögzített meccs.</span>
+<span id="recordReboundsDetails">No games recorded yet.</span>
 </div>
 <div class="card">
-<p>Legtöbb gólpassz egy meccsen</p>
+<p>Most Assists in a Game</p>
 <h2 id="recordAssists">0</h2>
-<span id="recordAssistsDetails">Még nincs rögzített meccs.</span>
+<span id="recordAssistsDetails">No games recorded yet.</span>
 </div>
 <div class="card">
-<p>Legtöbb bedobott tripla egy meccsen</p>
+<p>Most 3-Pointers Made in a Game</p>
 <h2 id="recordThrees">0</h2>
-<span id="recordThreesDetails">Még nincs rögzített meccs.</span>
+<span id="recordThreesDetails">No games recorded yet.</span>
 </div>
 </div>
 </section>
 <section class="panel">
 <p class="eyebrow">CURRENT SEASON</p>
-<h2>Idei szezon rekordjai</h2>
+<h2>Season Records</h2>
 <div class="stats">
 <div class="card">
-<p>Legtöbb pont</p>
+<p>Most Points</p>
 <h2 id="seasonRecordPoints">0</h2>
-<span id="seasonRecordPointsDetails">Még nincs idei meccs.</span>
+<span id="seasonRecordPointsDetails">No games recorded this season.</span>
 </div>
 <div class="card">
-<p>Legtöbb lepattanó</p>
+<p>Most Rebounds</p>
 <h2 id="seasonRecordRebounds">0</h2>
-<span id="seasonRecordReboundsDetails">Még nincs idei meccs.</span>
+<span id="seasonRecordReboundsDetails">No games recorded this season.</span>
 </div>
 <div class="card">
-<p>Legtöbb gólpassz</p>
+<p>Most Assists</p>
 <h2 id="seasonRecordAssists">0</h2>
-<span id="seasonRecordAssistsDetails">Még nincs idei meccs.</span>
+<span id="seasonRecordAssistsDetails">No games recorded this season.</span>
 </div>
 <div class="card">
-<p>Legtöbb bedobott tripla</p>
+<p>Most 3-Pointers Made</p>
 <h2 id="seasonRecordThrees">0</h2>
-<span id="seasonRecordThreesDetails">Még nincs idei meccs.</span>
+<span id="seasonRecordThreesDetails">No games recorded this season.</span>
 </div>
 </div>
 </section>
@@ -274,97 +262,69 @@
 <section id="gameSection" class="page-section">
 <section class="panel">
 <p class="eyebrow">GAME LOG</p>
-<h2>Meccs rögzítése</h2>
+<h2>Record a Game</h2>
 <form id="gameForm">
-<label for="opponent">Ellenfél
+<label for="opponent">Opponent
 <input
-
-                            id="opponent"
-
-                            type="text"
-
-                            placeholder="Pl. Honvéd"
-
-                            required
+                       id="opponent"
+                       type="text"
+                       placeholder="e.g. Honved"
+                       required
 >
 </label>
-<label for="gameDate">Dátum
+<label for="gameDate">Date
 <input id="gameDate" type="date" required>
 </label>
-<label for="points">Dobott pontok
+<label for="points">Points Scored
 <input id="points" type="number" min="0" step="1" required>
 </label>
-<label for="threeMade">Bedobott tripla
+<label for="threeMade">3-Pointers Made
 <input
-
-                            id="threeMade"
-
-                            type="number"
-
-                            min="0"
-
-                            step="1"
-
-                            value="0"
-
-                            required
+                       id="threeMade"
+                       type="number"
+                       min="0"
+                       step="1"
+                       value="0"
+                       required
 >
 </label>
-<label for="threeAttempted">Megkísérelt tripla
+<label for="threeAttempted">3-Pointers Attempted
 <input
-
-                            id="threeAttempted"
-
-                            type="number"
-
-                            min="0"
-
-                            step="1"
-
-                            value="0"
-
-                            required
+                       id="threeAttempted"
+                       type="number"
+                       min="0"
+                       step="1"
+                       value="0"
+                       required
 >
 </label>
-<label for="rebounds">Lepattanók
+<label for="rebounds">Rebounds
 <input
-
-                            id="rebounds"
-
-                            type="number"
-
-                            min="0"
-
-                            step="1"
-
-                            value="0"
-
-                            required
+                       id="rebounds"
+                       type="number"
+                       min="0"
+                       step="1"
+                       value="0"
+                       required
 >
 </label>
-<label for="assists">Gólpasszok
+<label for="assists">Assists
 <input
-
-                            id="assists"
-
-                            type="number"
-
-                            min="0"
-
-                            step="1"
-
-                            value="0"
-
-                            required
+                       id="assists"
+                       type="number"
+                       min="0"
+                       step="1"
+                       value="0"
+                       required
 >
 </label>
-<button type="submit">Meccs mentése</button>
+<button type="submit">Save Game</button>
 </form>
 </section>
 <section class="panel">
-<h2>Meccselőzmények</h2>
+<h2>Game History</h2>
 <div id="gameList">
-<p>Még nincs rögzített meccsed.</p>
+<p>No games recorded yet.</p>
 </div>
 </section>
 </section>
@@ -372,56 +332,47 @@
 <section id="workoutSection" class="page-section">
 <section class="panel">
 <p class="eyebrow">TRAINING LOG</p>
-<h2>Edzésnapló</h2>
+<h2>Workout Log</h2>
 <form id="workoutForm">
-<label for="workoutType">Edzés típusa
+<label for="workoutType">Workout Type
 <select id="workoutType" required>
-<option value="Doboedzes">Dobóedzés</option>
-<option value="Labdakezeles">Labdakezelés</option>
-<option value="Eronlet">Erőnlét</option>
-<option value="Ugroedzes">Ugróedzés</option>
-<option value="Csapatedzes">Csapatedzés</option>
+<option value="Doboedzes">Shooting</option>
+<option value="Labdakezeles">Ball Handling</option>
+<option value="Eronlet">Conditioning</option>
+<option value="Ugroedzes">Jump Training</option>
+<option value="Csapatedzes">Team Practice</option>
 </select>
 </label>
-<label for="workoutDuration">Időtartam (perc)
+<label for="workoutDuration">Duration (minutes)
 <input
-
-                            id="workoutDuration"
-
-                            type="number"
-
-                            min="1"
-
-                            step="1"
-
-                            required
+                       id="workoutDuration"
+                       type="number"
+                       min="1"
+                       step="1"
+                       required
 >
 </label>
-<label for="workoutDate">Dátum
+<label for="workoutDate">Date
 <input id="workoutDate" type="date" required>
 </label>
-<label for="workoutNote">Megjegyzés
+<label for="workoutNote">Notes
 <input
-
-                            id="workoutNote"
-
-                            type="text"
-
-                            placeholder="Pl. 100 sikeres tripla"
+                       id="workoutNote"
+                       type="text"
+                       placeholder="e.g. 100 made 3-pointers"
 >
 </label>
-<button type="submit">Edzés mentése</button>
+<button type="submit">Save Workout</button>
 </form>
 <div id="workoutList">
-<p>Még nincs rögzített edzésed.</p>
+<p>No workouts recorded yet.</p>
 </div>
 </section>
 </section>
 </main>
 <footer class="app-footer">
-<p>HoopTracker · Minden edzés számít.</p>
+<p>HoopTracker · Every workout counts.</p>
 </footer>
 <script src="script.js"></script>
 </body>
 </html>
- 
