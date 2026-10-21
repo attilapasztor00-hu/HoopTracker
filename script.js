@@ -985,7 +985,7 @@ renderChallenges();
 renderWorkouts();
 updateDashboard();
 
-/* HOOPTRACKER — SMOOTH LIQUID GLASS NAV */
+/* HOOPTRACKER — SMOOTH LIQUID GLASS NAV WITH CLICK LOCK */
 (() => {
   "use strict";
 
@@ -1002,6 +1002,7 @@ updateDashboard();
   let activeLink = null;
   let scrollFrame = 0;
   let resizeFrame = 0;
+  let isScrollingByClick = false;
 
   function shouldAnimateIndicator() {
     return mobileQuery.matches;
@@ -1064,23 +1065,20 @@ updateDashboard();
     moveIndicator(link, instant);
   }
 
- let isScrollingByClick = false;
-
   links.forEach((link) => {
     link.addEventListener("click", () => {
       isScrollingByClick = true;
       setActive(link);
 
-      // Amikor rákattintunk, megjelöljük az aktívat, 
-      // és egy rövid ideig letiltjuk, hogy a scroll-figyelő bezavarjon
       setTimeout(() => {
         isScrollingByClick = false;
-      }, 600); // 600ms alatt simán odagörpel az oldal
+      }, 600);
     });
   });
 
   function updateFromScroll() {
     scrollFrame = 0;
+    if (isScrollingByClick) return;
 
     let bestLink = links[0];
     let bestDistance = Infinity;
@@ -1115,6 +1113,7 @@ updateDashboard();
   window.addEventListener(
     "scroll",
     () => {
+      if (isScrollingByClick) return;
       if (scrollFrame) return;
 
       scrollFrame = requestAnimationFrame(updateFromScroll);
