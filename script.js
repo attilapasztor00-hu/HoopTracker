@@ -103,7 +103,7 @@ const savedAttributes = JSON.parse(
 );
 const attributes = Object.fromEntries(
    allAttributes.map(attribute => [
-attribute.id,
+       attribute.id,
        Math.max(
            60,
            Math.min(99, Number(savedAttributes[attribute.id]) || 60)
@@ -117,7 +117,6 @@ let playerProfile = JSON.parse(
 let completedChallenges = JSON.parse(
    localStorage.getItem("hoopTrackerCompletedChallenges") || "[]"
 );
-// Existing challenge IDs are preserved so saved completion data still works.
 const LEGACY_CHALLENGES = [
    {
        id: "shoot-ft-bronze",
@@ -390,7 +389,6 @@ const LEGACY_CHALLENGES = [
        reward: 2
    }
 ];
-// Generate progressive challenges for every attribute.
 const GENERATED_CHALLENGES = allAttributes.flatMap(attribute => {
    const tiers = [
        { difficulty: "Bronze", count: 8, reward: 1 },
@@ -499,13 +497,13 @@ function renderAttributes() {
            nameElement.textContent = name;
            const valueElement = document.createElement("span");
            valueElement.className = "attribute-value";
-valueElement.id = "attribute-value-" + id;
+           valueElement.id = "attribute-value-" + id;
            valueElement.textContent = value;
            const track = document.createElement("div");
            track.className = "attribute-track";
            const fill = document.createElement("div");
            fill.className = "attribute-fill";
-fill.id = "attribute-fill-" + id;
+           fill.id = "attribute-fill-" + id;
            fill.style.width = `${progress}%`;
            track.appendChild(fill);
            row.append(nameElement, valueElement, track);
@@ -527,7 +525,6 @@ function updatePlayerRating() {
            `${improved} / ${allAttributes.length} attributes improved above their base rating`;
    }
 }
-// Each generated challenge unlocks after the previous challenges for that attribute are completed.
 function isChallengeUnlocked(challenge) {
    if (challenge.progression === undefined) {
        return true;
@@ -662,7 +659,6 @@ function renderGames() {
            gameList.appendChild(item);
        });
 }
-// Keep the stored Hungarian values compatible with existing workout records.
 const WORKOUT_TYPE_LABELS = {
    Doboedzes: "Shooting Workout",
    Labdakezeles: "Ball Handling",
@@ -988,7 +984,8 @@ renderAttributes();
 renderChallenges();
 renderWorkouts();
 updateDashboard();
-/* HOOPTRACKER — SMOOTH IPHONE LIQUID GLASS NAV */
+
+/* HOOPTRACKER — SMOOTH LIQUID GLASS NAV */
 (() => {
   "use strict";
 
@@ -1000,25 +997,14 @@ updateDashboard();
 
   if (!links.length || !indicator) return;
 
-  const isIOS =
-    /iPhone|iPad|iPod/.test(navigator.userAgent) ||
-    (
-      navigator.platform === "MacIntel" &&
-      navigator.maxTouchPoints > 1
-    );
-
   const mobileQuery = window.matchMedia("(max-width: 700px)");
 
   let activeLink = null;
   let scrollFrame = 0;
   let resizeFrame = 0;
 
-  /*
-   * A mozgó üvegjelölő kizárólag iOS-es,
-   * legfeljebb 700 px széles nézetben aktív.
-   */
   function shouldAnimateIndicator() {
-    return isIOS && mobileQuery.matches;
+    return mobileQuery.matches;
   }
 
   function moveIndicator(link, instant = false) {
@@ -1078,22 +1064,12 @@ updateDashboard();
     moveIndicator(link, instant);
   }
 
-  /*
-   * A menüpontok kattintásra azonnal aktívvá válnak.
-   * A natív hivatkozás továbbra is a megfelelő
-   * szekcióhoz görget.
-   */
   links.forEach((link) => {
     link.addEventListener("click", () => {
       setActive(link);
     });
   });
 
-  /*
-   * Görgetéskor megkeressük az aktuális szekciót.
-   * requestAnimationFrame csökkenti a felesleges
-   * képkockánkénti számításokat.
-   */
   function updateFromScroll() {
     scrollFrame = 0;
 
@@ -1137,10 +1113,6 @@ updateDashboard();
     { passive: true }
   );
 
-  /*
-   * Forgatás, ablakméret-változás és betöltés után
-   * újramérjük a menüpontok helyét.
-   */
   function refreshNavigation() {
     if (resizeFrame) {
       cancelAnimationFrame(resizeFrame);
@@ -1177,11 +1149,6 @@ updateDashboard();
     mobileQuery.addListener(refreshNavigation);
   }
 
-  /*
-   * Kezdőállapot beállítása animáció nélkül,
-   * hogy betöltéskor ne csússzon át a jelölő
-   * az első menüpontra.
-   */
   function initializeNavigation() {
     const initial =
       links.find((link) => link.classList.contains("active")) ||
