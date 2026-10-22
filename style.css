@@ -69,7 +69,6 @@ header, .app-header {
     pointer-events: none;
 }
 
-/* FEJLÉC CÍM ÉS ÁTMENET - IPHONE ÉS SAFARI BIZTOSÍTÁSSAL */
 header h1 {
     margin: 0;
     font-size: clamp(24px, 4vw, 42px);
@@ -84,7 +83,6 @@ header h1 {
     -webkit-font-smoothing: antialiased;
 }
 
-/* A CÍM VÉGÉN LÉVŐ PONT SZIGORÚAN FEHÉR */
 header h1 span {
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
@@ -140,6 +138,9 @@ main {
 .card,
 .panel {
     min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
     border: 1px solid var(--border);
     border-radius: 22px;
     background: linear-gradient(145deg, rgba(18, 30, 52, 0.82), rgba(9, 15, 27, 0.9));
@@ -220,6 +221,8 @@ main {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
     margin-bottom: 24px;
+    width: 100%;
+    max-width: 100%;
 }
 
 #gameForm label,
@@ -233,7 +236,9 @@ main {
     font-size: 13px;
     font-weight: 600;
     width: 100%;
+    max-width: 100%;
     min-width: 0;
+    box-sizing: border-box;
 }
 
 #gameForm input,
@@ -244,9 +249,9 @@ main {
 .player-info input,
 .player-info select,
 .challenge-toolbar select {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
     min-height: 46px;
     padding: 12px 14px;
     border: 1px solid rgba(86, 142, 222, 0.25);
@@ -256,8 +261,27 @@ main {
     color: var(--text);
     font: inherit;
     font-size: 14px;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
+    -webkit-appearance: none;
+    appearance: none;
     transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+/* DÁTUM MEZŐ FIX (KIFINOMULT IPHONE SAFARI HANDLING) */
+input[type="date"] {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    display: block !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.85);
+    margin-right: 0;
 }
 
 #gameForm input:focus,
@@ -274,11 +298,6 @@ main {
 
 input::placeholder {
     color: #5c7295;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-    filter: invert(0.85);
 }
 
 select option {
@@ -731,7 +750,6 @@ button:active {
         display: none;
     }
 
-    /* MOBIL CÍM ÉS ÁTMENET KÉNYSZERÍTÉS WEB-KIT-HEZ */
     header h1 {
         font-size: 26px !important;
         display: inline-block !important;
@@ -768,6 +786,9 @@ button:active {
         padding: 18px;
         margin-top: 14px;
         border-radius: 18px;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .player-overview {
@@ -792,11 +813,15 @@ button:active {
         gap: 8px;
     }
 
+    /* SZIGORÚ MOBIL ŰRLAP LAYOUT - TELJES TÚLCSORDULÁS VÉDELEM */
     #gameForm,
     #workoutForm {
         display: flex !important;
         flex-direction: column !important;
         gap: 14px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     #gameForm label,
@@ -804,12 +829,14 @@ button:active {
     .panel > label {
         width: 100% !important;
         max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     #gameForm input,
     #workoutForm input,
     #workoutForm select,
-    #gameForm select {
+    #gameForm select,
+    input[type="date"] {
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
