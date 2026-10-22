@@ -82,7 +82,7 @@ header h1 {
     -webkit-text-fill-color: transparent;
 }
 
-/* A PONT SZIGORÚAN FEHÉR */
+/* A CÍM VÉGÉN LÉVŐ PONT SZIGORÚAN FEHÉR */
 header h1 span {
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
@@ -447,7 +447,7 @@ button:active {
     -webkit-background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
-    font-size: clamp(44px, 7vw, 75px); /* Biztosítva, hogy mobilon se lógjon le semmi */
+    font-size: clamp(44px, 7vw, 75px);
     font-weight: 900;
     line-height: 1;
     letter-spacing: -2px;
@@ -727,7 +727,7 @@ button:active {
         display: none;
     }
 
-    /* Mobilon a fejléc cím átmenet és méret kényszerítése */
+    /* MOBIL FEJLÉC CÍM ÉS ÁTMENET FIXÁLÁSA */
     header h1 {
         font-size: 26px !important;
         background: linear-gradient(110deg, #ffffff 30%, var(--blue-bright) 70%, var(--accent-red)) !important;
@@ -784,17 +784,19 @@ button:active {
         gap: 8px;
     }
 
-    /* MOBILON MINDEN ŰRLAP MEZŐ EGYES OSZLOPOS ÉS FIXEN BENNE MARAD A DOBOZBAN */
+    /* MOBILON AZ ŰRLAPOK ÉS DÁTUM MEZŐK FIXÁLÁSA (NEM LÓGNAK KI) */
     #gameForm,
     #workoutForm {
-        grid-template-columns: 1fr !important;
-        gap: 12px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 14px !important;
     }
 
     #gameForm label,
     #workoutForm label,
     .panel > label {
         width: 100% !important;
+        max-width: 100% !important;
     }
 
     #gameForm input,
@@ -803,6 +805,7 @@ button:active {
     #gameForm select {
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
         box-sizing: border-box !important;
     }
 
