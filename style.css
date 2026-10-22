@@ -69,7 +69,7 @@ header, .app-header {
     pointer-events: none;
 }
 
-/* FEJLÉC CÍM ÁTMENET SZAFAIRAKHOZ ÉS IPHONE-HOZ */
+/* FEJLÉC CÍM ÁTMENET */
 header h1 {
     margin: 0;
     font-size: clamp(24px, 4vw, 42px);
@@ -82,7 +82,7 @@ header h1 {
     -webkit-text-fill-color: transparent;
 }
 
-/* A PONT SZIgorúan FEHÉR MARAD */
+/* A PONT SZIGORÚAN FEHÉR */
 header h1 span {
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
@@ -447,10 +447,10 @@ button:active {
     -webkit-background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
-    font-size: clamp(50px, 8vw, 80px);
+    font-size: clamp(44px, 7vw, 75px); /* Biztosítva, hogy mobilon se lógjon le semmi */
     font-weight: 900;
     line-height: 1;
-    letter-spacing: -3px;
+    letter-spacing: -2px;
     filter: drop-shadow(0 0 20px rgba(71, 159, 255, 0.35));
     word-break: keep-all;
 }
@@ -727,6 +727,22 @@ button:active {
         display: none;
     }
 
+    /* Mobilon a fejléc cím átmenet és méret kényszerítése */
+    header h1 {
+        font-size: 26px !important;
+        background: linear-gradient(110deg, #ffffff 30%, var(--blue-bright) 70%, var(--accent-red)) !important;
+        background-clip: text !important;
+        -webkit-background-clip: text !important;
+        color: transparent !important;
+        -webkit-text-fill-color: transparent !important;
+    }
+
+    header h1 span {
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        background: none !important;
+    }
+
     .stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
@@ -768,10 +784,26 @@ button:active {
         gap: 8px;
     }
 
+    /* MOBILON MINDEN ŰRLAP MEZŐ EGYES OSZLOPOS ÉS FIXEN BENNE MARAD A DOBOZBAN */
     #gameForm,
     #workoutForm {
-        grid-template-columns: 1fr;
-        gap: 14px;
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    #gameForm label,
+    #workoutForm label,
+    .panel > label {
+        width: 100% !important;
+    }
+
+    #gameForm input,
+    #workoutForm input,
+    #workoutForm select,
+    #gameForm select {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     body .main-nav {
