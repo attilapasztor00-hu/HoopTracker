@@ -69,19 +69,21 @@ header, .app-header {
     pointer-events: none;
 }
 
+/* FEJLÉC CÍM: Most már finom átmenettel a szövegen is */
 header h1 {
     margin: 0;
-    font-size: clamp(27px, 4vw, 42px);
+    font-size: clamp(24px, 4vw, 42px);
     font-weight: 800;
     letter-spacing: -1.5px;
-    background: linear-gradient(110deg, #ffffff 40%, var(--blue-bright));
+    background: linear-gradient(110deg, #ffffff 30%, var(--blue-bright) 70%, var(--accent-red));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
+/* A pont is kapja meg az átmenetet vagy maradjon fehér finoman */
 header h1 span {
-    color: #ffffff;
-    -webkit-text-fill-color: #ffffff;
+    color: var(--accent-red);
+    -webkit-text-fill-color: var(--accent-red);
 }
 
 header p {
@@ -205,11 +207,12 @@ main {
     color: #bdcee8;
 }
 
+/* JAVÍTVA: Űrlapok mezői pontos mérettel, hogy ne lógjanak ki és egységesek legyenek */
 #gameForm,
 #workoutForm {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
+    gap: 16px;
     margin-bottom: 24px;
 }
 
@@ -219,10 +222,12 @@ main {
 .player-info label {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     color: #cce0fc;
     font-size: 13px;
     font-weight: 600;
+    width: 100%;
+    min-width: 0;
 }
 
 #gameForm input,
@@ -234,9 +239,10 @@ main {
 .player-info select,
 .challenge-toolbar select {
     width: 100%;
+    max-width: 100%;
     min-width: 0;
     min-height: 46px;
-    padding: 13px 16px;
+    padding: 12px 14px;
     border: 1px solid rgba(86, 142, 222, 0.25);
     border-radius: 14px;
     outline: none;
@@ -244,6 +250,7 @@ main {
     color: var(--text);
     font: inherit;
     font-size: 14px;
+    box-sizing: border-box;
     transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
@@ -278,7 +285,7 @@ select option {
     grid-column: 1 / -1;
 }
 
-/* GOMBOK (Save Game & Save Workout): Elegáns Kék-Lila-Piros Átmenet */
+/* GOMBOK */
 button {
     padding: 14px 20px;
     border: 1px solid rgba(255, 59, 92, 0.35);
@@ -290,6 +297,7 @@ button {
     letter-spacing: 0.6px;
     cursor: pointer;
     min-height: 46px;
+    box-sizing: border-box;
     box-shadow: 0 6px 20px rgba(30, 98, 212, 0.25), 0 0 12px rgba(255, 59, 92, 0.18);
     transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
 }
@@ -302,6 +310,28 @@ button:hover {
 
 button:active {
     transform: scale(0.98);
+}
+
+/* JAVÍTVA: Game History elemek és a Törlés gomb távolsága */
+#gameList .game-item,
+#workoutList .workout-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+#gameList .game-item button,
+#workoutList .workout-item button {
+    margin-left: auto;
+    padding: 8px 14px;
+    min-height: 36px;
+    font-size: 12px;
 }
 
 .main-nav {
@@ -378,12 +408,12 @@ button:active {
 }
 
 /* =========================================
-   MY PLAYER STYLING
+   MY PLAYER STYLING (Javított Overall Rating méret, hogy ne lógjon ki)
    ========================================= */
 .player-overview {
     display: grid;
-    grid-template-columns: minmax(160px, 0.7fr) minmax(0, 2fr);
-    gap: 28px;
+    grid-template-columns: minmax(140px, 0.7fr) minmax(0, 2fr);
+    gap: 20px;
     align-items: center;
     background: linear-gradient(135deg, rgba(22, 38, 66, 0.9), rgba(10, 16, 28, 0.95)) !important;
     border: 1px solid rgba(71, 159, 255, 0.35) !important;
@@ -406,19 +436,21 @@ button:active {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 10px 18px 10px 12px;
+    padding: 10px 14px 10px 12px;
     border-right: 1px solid var(--border);
+    min-width: 0;
 }
 
 .overall-rating {
     background: linear-gradient(135deg, #ffffff 30%, var(--blue-bright));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: clamp(70px, 11vw, 98px);
+    font-size: clamp(55px, 9vw, 84px); /* Kicsit optimalizálva, hogy mobilon se lógjon ki */
     font-weight: 900;
     line-height: 1;
-    letter-spacing: -5px;
+    letter-spacing: -3px;
     filter: drop-shadow(0 0 20px rgba(71, 159, 255, 0.35));
+    word-break: keep-all;
 }
 
 .player-tier {
@@ -438,6 +470,7 @@ button:active {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 12px 16px;
     align-items: center;
+    min-width: 0;
 }
 
 .player-info label:nth-of-type(1),
@@ -517,7 +550,6 @@ button:active {
     font-weight: 600;
 }
 
-/* MY PLAYER SZÁMOK: Finom piros neongyűrű ragyogás */
 .attribute-value {
     color: var(--blue-bright);
     font-size: 15px;
@@ -542,7 +574,6 @@ button:active {
     transition: width 0.4s ease;
 }
 
-/* Progress bar a dashboardon */
 .progress-bar {
     height: 10px;
     background: rgba(255, 255, 255, 0.08);
@@ -704,7 +735,7 @@ button:active {
     }
 
     .card h2 {
-        font-size: 26px;
+        font-size: 24px;
     }
 
     .panel {
@@ -719,7 +750,7 @@ button:active {
     }
 
     .overall-block {
-        padding: 0 0 18px;
+        padding: 0 0 14px;
         border-right: 0;
         border-bottom: 1px solid var(--border);
     }
@@ -733,6 +764,13 @@ button:active {
         flex-direction: column;
         align-items: stretch;
         gap: 8px;
+    }
+
+    /* Mobilon az űrlapok egyoszloposak lesznek, így biztosan nem lógnak ki a mezők */
+    #gameForm,
+    #workoutForm {
+        grid-template-columns: 1fr;
+        gap: 14px;
     }
 
     body .main-nav {
