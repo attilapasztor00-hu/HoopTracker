@@ -69,17 +69,19 @@ header, .app-header {
     pointer-events: none;
 }
 
-/* FEJLÉC CÍM ÁTMENET */
+/* FEJLÉC CÍM ÉS ÁTMENET - IPHONE ÉS SAFARI BIZTOSÍTÁSSAL */
 header h1 {
     margin: 0;
     font-size: clamp(24px, 4vw, 42px);
     font-weight: 800;
     letter-spacing: -1.5px;
+    display: inline-block;
     background: linear-gradient(110deg, #ffffff 30%, var(--blue-bright) 70%, var(--accent-red));
-    background-clip: text;
     -webkit-background-clip: text;
-    color: transparent;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: transparent;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* A CÍM VÉGÉN LÉVŐ PONT SZIGORÚAN FEHÉR */
@@ -87,6 +89,8 @@ header h1 span {
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
     background: none !important;
+    background-clip: border-box !important;
+    -webkit-background-clip: border-box !important;
 }
 
 header p {
@@ -443,10 +447,10 @@ button:active {
 
 .overall-rating {
     background: linear-gradient(135deg, #ffffff 30%, var(--blue-bright));
-    background-clip: text;
     -webkit-background-clip: text;
-    color: transparent;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: transparent;
     font-size: clamp(44px, 7vw, 75px);
     font-weight: 900;
     line-height: 1;
@@ -727,20 +731,24 @@ button:active {
         display: none;
     }
 
-    /* MOBIL FEJLÉC CÍM ÉS ÁTMENET FIXÁLÁSA */
+    /* MOBIL CÍM ÉS ÁTMENET KÉNYSZERÍTÉS WEB-KIT-HEZ */
     header h1 {
         font-size: 26px !important;
+        display: inline-block !important;
         background: linear-gradient(110deg, #ffffff 30%, var(--blue-bright) 70%, var(--accent-red)) !important;
-        background-clip: text !important;
         -webkit-background-clip: text !important;
-        color: transparent !important;
+        background-clip: text !important;
         -webkit-text-fill-color: transparent !important;
+        color: transparent !important;
+        -webkit-font-smoothing: antialiased !important;
     }
 
     header h1 span {
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
         background: none !important;
+        background-clip: border-box !important;
+        -webkit-background-clip: border-box !important;
     }
 
     .stats {
@@ -784,7 +792,6 @@ button:active {
         gap: 8px;
     }
 
-    /* MOBILON AZ ŰRLAPOK ÉS DÁTUM MEZŐK FIXÁLÁSA (NEM LÓGNAK KI) */
     #gameForm,
     #workoutForm {
         display: flex !important;
